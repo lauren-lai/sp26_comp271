@@ -22,27 +22,26 @@ S = [
     " SSSSSSS ",
     "       SS",
     "       SS",
-    "SSSSSSSS"
+    "SSSSSSSS "
 ]
 
 P = [
     "PPPPPPPP ",
-    "PP     PP",
+    "P      P ",
     "PPPPPPPP ",
-    "PP       ",
-    "PP       ",
-    "PP       "
+    "P        ",
+    "P        ",
+    "P        "
 ]
 
 def compose_horizontal(letters):
-    # assume that each letter has the same height
+    # assumes that each letter has the same height
     height = len(letters[0])
+
     for line in range(height):
         for letter in letters:
             print(letter[line], end ="")
-    # break a line
-    print()
+        print()
 
-RIVER_NAME = [M, I , S, S, I, S, S, P, P, I]
-
-def compose_horizontal(RIVER_NAME)
+RIVER_NAME = [M, I , S, S, I, S, S, I, P, P, I]
+compose_horizontal(RIVER_NAME)
