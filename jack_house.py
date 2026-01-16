@@ -10,9 +10,6 @@ rat_string = f"{ITEMS[2]} that {ACTIONS[2]} in the {malt_string}"
 cat_string = f"{ITEMS[3]} that {ACTIONS[3]} in the {rat_string}"
 dog_string = f"{ITEMS[4]} that {ACTIONS[4]} in the {cat_string}"
 
-def print_stanza(verse):
-    print(f"{PREFIX} {verse}\n")
-
 # first stanza only has prefix and suffix
 def first_stanza():
     print(f"{PREFIX} {SUFFIX}\n")
@@ -28,5 +25,8 @@ def other_stanzas():
         print(f"{PREFIX} {current}\n")
         previous = current
 
-first_stanza()
-other_stanzas()
+def main():
+    first_stanza()
+    other_stanzas()
+
+main()

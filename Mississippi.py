@@ -34,7 +34,7 @@ P = [
     "P        "
 ]
 
-def compose_horizontal(letters):
+def print_horizontal(letters):
     # assumes that each letter has the same height
     height = len(letters[0])
 
@@ -43,5 +43,8 @@ def compose_horizontal(letters):
             print(letter[line], end ="")
         print()
 
-RIVER_NAME = [M, I , S, S, I, S, S, I, P, P, I]
-compose_horizontal(RIVER_NAME)
+def main():
+    RIVER_NAME = [M, I , S, S, I, S, S, I, P, P, I]
+    print_horizontal(RIVER_NAME)
+
+main()
