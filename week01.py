@@ -2,14 +2,32 @@ class IsomorphicStrings:
     S = ""
     T = ""
 
-    def are_isomorphic(word1, word2) -> bool:
+    def are_isomorphic(self, word1, word2) -> bool:
         S = word1
         T = word2
+        word_map = [[0 for _ in range(len(S))] for _ in range(2)]
         to_return = False
 
-        if (len(T) != (len(S))) or (1 <= len(S) <= 500):
+        # constraints on S and T: need to be same length, between 1 and 500 characters, and don't contain numbers
+        # TODO: find a way to exclude punctuation marks too??
+        if (len(word1) != len(word2)) or ((len(S) <= 1) or (500 <= len(S))) or not (word1.isalpha() or word2.isalpha()):
             to_return = False
+        else:
+            for i in range(len(word1)):
+                # if this is a new letter in S
+                if (word1[i] not in word_map[0]):
+                    word_map[0][i] = word1[i]
+                    word_map[1][i] = word2[i]
+                # if this is a previously used letter in S
+                elif (word1[i] in word_map[0]):
+                    index = word_map[0].index(word1[i]) # find previous equivalent and use that
+                    word_map[1][i] = word2[index]
+                    word_map[0][i] = word1[i]     
 
+            word2_list = list(word2)
+            if word2_list == word_map[1]: 
+                to_return = True
+    
         return to_return
     
 class InterleavingStrings:      
@@ -61,5 +79,13 @@ class Main():
     interleavingStrings = InterleavingStrings()
     longestBalancedSubarray = LongestBalancedSubarray()
 
+    _iso_string1 = "add"
+    _iso_string2 = "bee"
     _lbs_array = [0, 1, 0, 0, 1, 1]
-    print(f"with the array {_lbs_array}, the longest balanced subarray is {longestBalancedSubarray.contiguous_length(_lbs_array)}")
+
+    isomorphic_boolean = isomorphicStrings.are_isomorphic(_iso_string1, _iso_string2)
+    str = "are" if isomorphic_boolean else "are not"
+    print(f"the strings {_iso_string1} and {_iso_string2} {str} isomorphic")
+   
+    subarray_length = longestBalancedSubarray.contiguous_length(_lbs_array)
+    print(f"the longest balanced subarray is {subarray_length} characters long")
