@@ -31,14 +31,31 @@ class IsomorphicStrings:
         return to_return
     
 class InterleavingStrings:      
-    S1 = ""
-    S2 = ""
-    S3 = ""
+    _S1 = ""
+    _S2 = ""
+    _S3 = ""
 
-    def is_interleaved(s1, s2, s3):
-        S1 = s1
-        S2 = s2
-        S3 = s3
+    def is_interleaved(self, s1, s2, s3):
+        _S1 = s1
+        _S2 = s2
+        _S3 = s3
+        interleaved1 = ""
+        interleaved2 = ""
+        to_return = False
+
+        for i in range(len(s1)):
+            interleaved1 = interleaved1 + s1[i] + s2[i]
+            interleaved2 = interleaved2 + s2[i] + s1[i]
+        to_return = interleaved1 == _S3 or interleaved2 == _S3
+
+        if (0 >= len(_S1)) or (0 >= len(_S2)) or (100 <= len(_S1)) or (100 <= len(_S1)):
+            to_return = False
+        if (0 >= len(_S3)) or (200 <= len(_S3)):
+            to_return = False
+
+        return to_return
+
+        
 
 class LongestBalancedSubarray:
     _BINARY_ARRAY = []
@@ -82,10 +99,17 @@ class Main():
     _iso_string1 = "add"
     _iso_string2 = "bee"
     _lbs_array = [0, 1, 0, 0, 1, 1]
+    _inter_string1 = "abc"
+    _inter_string2 = "def"
+    _inter_string3 = "adbecf"
 
     isomorphic_boolean = isomorphicStrings.are_isomorphic(_iso_string1, _iso_string2)
-    str = "are" if isomorphic_boolean else "are not"
-    print(f"the strings {_iso_string1} and {_iso_string2} {str} isomorphic")
+    iso_str = "are" if isomorphic_boolean else "are not"
+    print(f"the strings {_iso_string1} and {_iso_string2} {iso_str} isomorphic")
    
     subarray_length = longestBalancedSubarray.contiguous_length(_lbs_array)
     print(f"the longest balanced subarray is {subarray_length} characters long")
+
+    interleave_boolean = interleavingStrings.is_interleaved(_inter_string1, _inter_string2, _inter_string3)
+    inter_str = "can" if interleave_boolean else "cannot"
+    print(f"the strings {_inter_string1} and {_inter_string2} {inter_str} form {_inter_string3}")
