@@ -1,24 +1,23 @@
 class IsomorphicStrings:
-    S = ""
-    T = ""
+    _S = ""
+    _T = ""
 
     def are_isomorphic(self, word1, word2) -> bool:
-        S = word1
-        T = word2
-        word_map = [[0 for _ in range(len(S))] for _ in range(2)]
+        _S = word1
+        _T = word2
+        word_map = [[0 for _ in range(len(_S))] for _ in range(2)]
         to_return = False
 
-        # constraints on S and T: need to be same length, between 1 and 500 characters, and don't contain numbers
-        # TODO: find a way to exclude punctuation marks too??
-        if (len(word1) != len(word2)) or ((len(S) <= 1) or (500 <= len(S))) or not (word1.isalpha() or word2.isalpha()):
+        # constraints on _S and _T: need to be same length, between 1 and 500 characters, and dont contain numbers
+        if (len(word1) != len(word2)) or ((len(_S) <= 1) or (500 <= len(_S))) or not (word1.isalpha() or word2.isalpha()):
             to_return = False
         else:
             for i in range(len(word1)):
-                # if this is a new letter in S
+                # if this is a new letter in _S
                 if (word1[i] not in word_map[0]):
                     word_map[0][i] = word1[i]
                     word_map[1][i] = word2[i]
-                # if this is a previously used letter in S
+                # if this is a previously used letter in _S
                 elif (word1[i] in word_map[0]):
                     index = word_map[0].index(word1[i]) # find previous equivalent and use that
                     word_map[1][i] = word2[index]
@@ -42,20 +41,19 @@ class InterleavingStrings:
         interleaved1 = ""
         interleaved2 = ""
         to_return = False
-
+        # alternate letters, different starting letter in each string
         for i in range(len(s1)):
             interleaved1 = interleaved1 + s1[i] + s2[i]
             interleaved2 = interleaved2 + s2[i] + s1[i]
-        to_return = interleaved1 == _S3 or interleaved2 == _S3
+        to_return = interleaved1 == _S3 or interleaved2 == _S3 # true if one of the interleaved strings is the same as _S3
 
+        # constraints on _S1, _S2, and _S3
         if (0 >= len(_S1)) or (0 >= len(_S2)) or (100 <= len(_S1)) or (100 <= len(_S1)):
             to_return = False
         if (0 >= len(_S3)) or (200 <= len(_S3)):
             to_return = False
 
         return to_return
-
-        
 
 class LongestBalancedSubarray:
     _BINARY_ARRAY = []
@@ -65,7 +63,7 @@ class LongestBalancedSubarray:
         current_count = 0
         to_return = 0
 
-        # counts longest continuous streak of num in to_search and updates when the current streak ends
+        # counts longest continuous streak of num in to_search, update when the current streak ends
         for i in range(len(to_search)):
             if to_search[i] == num:
                 current_count +=1
@@ -82,23 +80,21 @@ class LongestBalancedSubarray:
         return to_return
     
     def contiguous_length(self, binarr) -> list:
-        BINARY_ARRAY = binarr
-        to_return = 0
-        zeros_streak = self.count_continuous(0, BINARY_ARRAY)
-        ones_streak = self.count_continuous(1, BINARY_ARRAY)
+        _BINARY_ARRAY = binarr
+        zeros_streak = self.count_continuous(0, _BINARY_ARRAY)
+        ones_streak = self.count_continuous(1, _BINARY_ARRAY)
         # sets max to the shorter streak length
         max = zeros_streak if zeros_streak < ones_streak else ones_streak
-        to_return = max * 2
-        return to_return
+        return max * 2
 
 class Main():
     isomorphicStrings = IsomorphicStrings()
     interleavingStrings = InterleavingStrings()
     longestBalancedSubarray = LongestBalancedSubarray()
 
-    _iso_string1 = "add"
-    _iso_string2 = "bee"
-    _lbs_array = [0, 1, 0, 0, 1, 1]
+    _iso_string1 = "title"
+    _iso_string2 = "paper"
+    _lbs_array = [0, 0, 1, 1, 1]
     _inter_string1 = "abc"
     _inter_string2 = "def"
     _inter_string3 = "adbecf"
@@ -106,10 +102,10 @@ class Main():
     isomorphic_boolean = isomorphicStrings.are_isomorphic(_iso_string1, _iso_string2)
     iso_str = "are" if isomorphic_boolean else "are not"
     print(f"the strings {_iso_string1} and {_iso_string2} {iso_str} isomorphic")
-   
-    subarray_length = longestBalancedSubarray.contiguous_length(_lbs_array)
-    print(f"the longest balanced subarray is {subarray_length} characters long")
 
     interleave_boolean = interleavingStrings.is_interleaved(_inter_string1, _inter_string2, _inter_string3)
     inter_str = "can" if interleave_boolean else "cannot"
     print(f"the strings {_inter_string1} and {_inter_string2} {inter_str} form {_inter_string3}")
+
+    subarray_length = longestBalancedSubarray.contiguous_length(_lbs_array)
+    print(f"the longest balanced subarray is {subarray_length} characters long")
