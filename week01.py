@@ -1,3 +1,6 @@
+# COMP271 assignment 1 due 23 january 2026
+# TODO: add docstirngs again 
+
 class IsomorphicStrings:
     _S = ""
     _T = ""
@@ -5,7 +8,7 @@ class IsomorphicStrings:
     def are_isomorphic(self, word1, word2) -> bool:
         _S = word1
         _T = word2
-        word_map = [[0 for _ in range(len(_S))] for _ in range(2)]
+        word_map = [[0 for _ in range(len(_S))] for _ in range(2)] # first list is the letters word1, second is a string assembled
         to_return = False
 
         # constraints on _S and _T: need to be same length, between 1 and 500 characters, and dont contain numbers
