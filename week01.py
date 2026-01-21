@@ -1,11 +1,13 @@
 # COMP271 assignment 1 due 23 january 2026
-# TODO: add docstirngs again 
-
 class IsomorphicStrings:
     _S = ""
     _T = ""
 
-    def are_isomorphic(self, word1, word2) -> bool:
+    def are_isomorphic(self, word1: str, word2: str) -> bool:
+        """
+        checks if word1 and word2 are isomorphic
+        returns True if they are isomorphic, False if they are not or fail to meet conditions set in problem
+        """
         _S = word1
         _T = word2
         word_map = [[0 for _ in range(len(_S))] for _ in range(2)] # first list is the letters word1, second is a string assembled
@@ -27,7 +29,7 @@ class IsomorphicStrings:
                     word_map[0][i] = word1[i]     
 
             word2_list = list(word2)
-            if word2_list == word_map[1]: 
+            if word2_list == word_map[1]: # return true if the word assembled from word1 indexes and word2 letters is the same as word2
                 to_return = True
     
         return to_return
@@ -37,7 +39,11 @@ class InterleavingStrings:
     _S2 = ""
     _S3 = ""
 
-    def is_interleaved(self, s1, s2, s3):
+    def is_interleaved(self, s1: str, s2: str, s3: str):
+        """
+        interleaves s1 and s2 to try and form s3
+        returns True if alternating the letters in s1 and s2 can form s3, False otherwise
+        """
         _S1 = s1
         _S2 = s2
         _S3 = s3
@@ -61,7 +67,11 @@ class InterleavingStrings:
 class LongestBalancedSubarray:
     _BINARY_ARRAY = []
     
-    def count_continuous(self, num, to_search) -> int:
+    def count_continuous(self, num: int, to_search: list) -> int:
+        """
+        finds the longest streak of num in to_search
+        returns length of streak
+        """
         prev_count = 0
         current_count = 0
         to_return = 0
@@ -82,7 +92,11 @@ class LongestBalancedSubarray:
 
         return to_return
     
-    def contiguous_length(self, binarr) -> list:
+    def contiguous_length(self, binarr: list) -> list:
+        """
+        finds the longest balanced array of 0s and 1s in binarr
+        returns length of that array
+        """
         _BINARY_ARRAY = binarr
         zeros_streak = self.count_continuous(0, _BINARY_ARRAY)
         ones_streak = self.count_continuous(1, _BINARY_ARRAY)
@@ -91,6 +105,7 @@ class LongestBalancedSubarray:
         return max * 2
 
 class Main():
+    # ive worked with python and java before so i set up classes to organize stuff
     isomorphicStrings = IsomorphicStrings()
     interleavingStrings = InterleavingStrings()
     longestBalancedSubarray = LongestBalancedSubarray()
