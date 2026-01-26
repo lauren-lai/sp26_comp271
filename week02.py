@@ -18,7 +18,7 @@ class Week02:
         """
         underlying.append([first_name, last_name, role])
     
-    def add_unique_first_name(self, first_name: str, last_name: str, role: str,underlying: list[list[str]]) -> None:
+    def add_unique_first_name(self, first_name: str, last_name: str, role: str, underlying: list[list[str]]) -> None:
         """
         creates a new entry in underlying of [first_name, last_name, role] if first_name isnt in underlying[0]
         """
@@ -68,17 +68,18 @@ class Main():
     ]
     week02 = Week02()
     print(f"ORIGINAL LIST = {_ST_CHARACTERS}")
-    
-    week02.add("Yuri", "Ismaylov", "Smuggler", _ST_CHARACTERS)
-    week02.add("Yuri", "Ismaylov", "Smuggler", _ST_CHARACTERS)
-    week02.add("Yuri", "Ismaylov", "Smuggler", _ST_CHARACTERS)
-    print(f"ADDEDD NAMES = {_ST_CHARACTERS}")
 
-    # week02.add_unique_first_name("Steve", "Ismaylov", "Smuggler", _ST_CHARACTERS)
-    # week02.add_unique_last_name("Steve", "Ismaylov", "Smuggler", _ST_CHARACTERS)
-    # week02.remove_first_name("Yuri", _ST_CHARACTERS)
-    removed_list = week02.remove_all_first_name("Yuri", _ST_CHARACTERS)
-    print(removed_list)
+    # testing adds:
+    # week02.add("Yuri", "Ismaylov", "Smuggler", _ST_CHARACTERS)
+    # week02.add_unique_first_name("Yuri", "Ismaylov", "Smuggler", _ST_CHARACTERS)
+    # week02.add_unique_last_name("Yuri", "Ismaylov", "Smuggler", _ST_CHARACTERS)
+
+    # testing removes:
+    # week02.remove_first_name("Jim", _ST_CHARACTERS)
+    
+    # week02.add("Yuri", "Ismaylov", "Smuggler", _ST_CHARACTERS)
+    # week02.add("Yuri", "Ismaylov", "Smuggler", _ST_CHARACTERS)
+    # week02.remove_all_first_name("Yuri", _ST_CHARACTERS)
 
     print(f"FINAL LIST = {_ST_CHARACTERS}")
 
