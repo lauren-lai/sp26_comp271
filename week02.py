@@ -1,9 +1,9 @@
 class Week02:
-    FIRST_NAME = 0
-    LAST_NAME = 1
-    ROLE = 2
+    _FIRST_NAME = 0
+    _LAST_NAME = 1
+    _ROLE = 2
 
-    def contains_name(self, name: str, underlying: list[list[str]], index: int) -> bool:
+    def _contains_name(self, name: str, underlying: list[list[str]], index: int) -> bool:
         """
         returns True if underlying contains name in the sublist index of underlying, False otherwise
         """
@@ -15,7 +15,7 @@ class Week02:
             i += 1
         return is_found
 
-    def add(self, first_name: str, last_name:str, role: str, underlying: list[list[str]]) -> None:
+    def add(self, first_name: str, last_name :str, role: str, underlying: list[list[str]]) -> None:
         """
         creates a new entry in underlying of [first_name, last_name, role]
         """
@@ -23,16 +23,16 @@ class Week02:
     
     def add_unique_first_name(self, first_name: str, last_name: str, role: str, underlying: list[list[str]]) -> None:
         """
-        creates a new entry in underlying of [first_name, last_name, role] if first_name isnt in underlying[0]
+        creates a new entry in underlying of [first_name,  last_name, role] if first_name isnt in underlying[0]
         """
-        if not self.contains_name(first_name, underlying, self.FIRST_NAME):
+        if not self.contains_name(first_name, underlying, self._FIRST_NAME):
             underlying.append([first_name, last_name, role])
     
-    def add_unique_last_name(self, first_name: str, last_name:str, role: str,underlying: list[list[str]]) -> None:
+    def add_unique_last_name(self, first_name: str, last_name: str, role: str,underlying: list[list[str]]) -> None:
         """
         creates a new entry in underlying of [first_name, last_name, role] if last_name isnt in underlying[1]
         """
-        if not self.contains_name(last_name, underlying, self.LAST_NAME):
+        if not self.contains_name( last_name, underlying, self._LAST_NAME):
             underlying.append([first_name, last_name, role])
     
     def remove_first_name(self, first_name: str, underlying: list[list[str]]) -> str|None:
@@ -43,7 +43,7 @@ class Week02:
         have_removed: bool = False
         i: int = 0
         while (not have_removed) and (i < len(underlying)):
-            if underlying[i][self.FIRST_NAME] == first_name:
+            if underlying[i][self._FIRST_NAME] == first_name:
                 removed = underlying.pop(i)
                 have_removed = True
             i += 1
