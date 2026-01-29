@@ -5,7 +5,7 @@ class Week02:
 
     def _contains_name(self, name: str, underlying: list[list[str]], index: int) -> bool:
         """
-        helper method
+        private helper method
         returns True if underlying contains name in the sublist index of underlying, False otherwise
         """
         is_found: bool = False
@@ -69,7 +69,6 @@ class Week02:
         underlying.extend(new_list)
         return removed_names
 
-
 class Main():
     _ST_CHARACTERS = [
         ["Jim", "Hopper", "Chief of Police"],
@@ -80,17 +79,17 @@ class Main():
     print(f"ORIGINAL LIST = {_ST_CHARACTERS}")
 
     # testing adds:
-    # week02.add("Yuri", "Ismaylov", "Smuggler", _ST_CHARACTERS)
-    # week02.add_unique_first_name("Yuri", "Ismaylov", "Smuggler", _ST_CHARACTERS)
-    # week02.add_unique_last_name("Yuri", "Ismaylov", "Smuggler", _ST_CHARACTERS)
+    week02.add("Yuri", "Ismaylov", "Smuggler", _ST_CHARACTERS)
+    week02.add_unique_first_name("Yuri", "Ismaylov", "Smuggler", _ST_CHARACTERS)
+    week02.add_unique_last_name("Yuri", "Ismaylov", "Smuggler", _ST_CHARACTERS)
 
     # testing removes:
     # week02.remove_first_name("Jim", _ST_CHARACTERS)
     
-    week02.add("Yuri", "Ismaylov", "Smuggler", _ST_CHARACTERS)
-    week02.add("Yuri", "Ismaylov", "Smuggler", _ST_CHARACTERS)
-    week02.add("Yuri", "Ismaylov", "Smuggler", _ST_CHARACTERS)
-    print(week02.remove_all_first_name("Jim", _ST_CHARACTERS))
+    # week02.add("Yuri", "Ismaylov", "Smuggler", _ST_CHARACTERS)
+    # week02.add("Yuri", "Ismaylov", "Smuggler", _ST_CHARACTERS)
+    # week02.add("Yuri", "Ismaylov", "Smuggler", _ST_CHARACTERS)
+    # print(week02.remove_all_first_name("Jim", _ST_CHARACTERS))
 
     print(f"FINAL LIST = {_ST_CHARACTERS}")
 
