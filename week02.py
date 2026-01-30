@@ -1,7 +1,8 @@
 class Week02:
-    _FIRST_NAME = 0
-    _LAST_NAME = 1
-    _ROLE = 2
+    def __init__(self):
+        self._FIRST_NAME = 0
+        self._LAST_NAME = 1
+        self._ROLE = 2
 
     def _contains_name(self, name: str, underlying: list[list[str]], index: int) -> bool:
         """
@@ -23,16 +24,16 @@ class Week02:
     
     def add_unique_first_name(self, first_name: str, last_name: str, role: str, underlying: list[list[str]]) -> None:
         """
-        creates a new entry in underlying of [first_name,  last_name, role] if first_name isnt in underlying[0]
+        creates a new entry in underlying of [first_name,  last_name, role] if first_name isnt in underlying[_FIRST_NAME]
         """
-        if not self.contains_name(first_name, underlying, self._FIRST_NAME):
+        if not self._contains_name(first_name, underlying, self._FIRST_NAME):
             underlying.append([first_name, last_name, role])
     
     def add_unique_last_name(self, first_name: str, last_name: str, role: str,underlying: list[list[str]]) -> None:
         """
-        creates a new entry in underlying of [first_name, last_name, role] if last_name isnt in underlying[1]
+        creates a new entry in underlying of [first_name, last_name, role] if last_name isnt in underlying[_LAST_NAME]
         """
-        if not self.contains_name( last_name, underlying, self._LAST_NAME):
+        if not self._contains_name( last_name, underlying, self._LAST_NAME):
             underlying.append([first_name, last_name, role])
     
     def remove_first_name(self, first_name: str, underlying: list[list[str]]) -> str|None:
@@ -61,7 +62,7 @@ class Week02:
                 removed_names.append(name)
             else:
                 i += 1
-        return removed_names
+        return removed_names if len(removed_names) > 0 else None
 
 class Main():
     _ST_CHARACTERS = [
@@ -74,15 +75,15 @@ class Main():
 
     # testing adds:
     # week02.add("Yuri", "Ismaylov", "Smuggler", _ST_CHARACTERS)
-    # week02.add_unique_first_name("Yuri", "Ismaylov", "Smuggler", _ST_CHARACTERS)
-    # week02.add_unique_last_name("Yuri", "Ismaylov", "Smuggler", _ST_CHARACTERS)
+    # week02.add_unique_first_name("Mike", "Wheeler", "annoying kid", _ST_CHARACTERS)
+    # week02.add_unique_last_name("Holly", "Wheeler", "goat", _ST_CHARACTERS)
 
     # testing removes:
     # week02.remove_first_name("Jim", _ST_CHARACTERS)
     
     # week02.add("Yuri", "Ismaylov", "Smuggler", _ST_CHARACTERS)
     # week02.add("Yuri", "Ismaylov", "Smuggler", _ST_CHARACTERS)
-    # week02.remove_all_first_name("Yuri", _ST_CHARACTERS)
+    # print(week02.remove_all_first_name("Yuri", _ST_CHARACTERS))
 
     print(f"FINAL LIST = {_ST_CHARACTERS}")
 
