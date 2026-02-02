@@ -130,12 +130,17 @@ class Cast:
     def add_unique(self, first_name: str, last_name: str, role: str) -> bool:
         # adds a Character to the Cast object only if there is no other object with the same first name, last 
         # name, and role description. The method returns True if the addition was succesful and False otherwise.
-        print("hi")
+        bool: to_return = False
+        if not self.contains_first_name(first_name) and not self.contains_last_name(last_name) and not self.contains_role(role):
+            self.add_character(first_name, last_name, role)
+            to_return = True
+        return to_return
     
     def remove(self, first_name: str, last_name: str, role: str) -> Character | None:
         # removes and returns the first Character object that matches the specified first name and last name and role. 
         # If no such object exists, the method shall return None.
-        print("hi")
+        removed = None
+        
     
 
 
