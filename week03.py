@@ -130,8 +130,8 @@ class Cast:
     def add_unique(self, first_name: str, last_name: str, role: str) -> bool:
         # adds a Character to the Cast object only if there is no other object with the same first name, last 
         # name, and role description. The method returns True if the addition was succesful and False otherwise.
-        bool: to_return = False
-        if not self.contains_first_name(first_name) and not self.contains_last_name(last_name) and not self.contains_role(role):
+        to_return = False
+        if not self.contains_first_name(first_name) or not self.contains_last_name(last_name) or not self.contains_role(role):
             self.add_character(first_name, last_name, role)
             to_return = True
         return to_return
@@ -140,7 +140,33 @@ class Cast:
         # removes and returns the first Character object that matches the specified first name and last name and role. 
         # If no such object exists, the method shall return None.
         removed = None
-        
+        if self.contains_first_name(first_name) and self.contains_last_name(last_name) and self.contains_role(role):
+            i = 0
+            index = -1
+            while i < len(self.__underlying) and index == -1:
+                if self.__underlying[i].get_first_name() == first_name:
+                    index = i
+                    removed = self.__underlying.pop(index)
+                i += 1
+        return removed
+
+class Main:
+    cast = Cast("Criminal Minds")
+
+    # testing adds
+    cast.add_character("aaron", "hotchner", "unit chief")
+    cast.add_character("emily", "prentiss", "goat")
+    cast.add_character("spencer", "reid", "genius")
+    cast.add_character("jennifer", "jareau", "media liason")
+    cast.add_unique("haley", "hotchner", "wife") # works because diff first name and role
+    print(cast.report())
+
+    # testing remove
+    print(cast.remove("aaron", "hotchner", "unit chief"))
+    print(cast.remove("emily", "prentiss", "goat"))
+
+    print(cast.report())
+
     
 
 
