@@ -128,8 +128,11 @@ class Cast:
         return output
 
     def add_unique(self, first_name: str, last_name: str, role: str) -> bool:
-        # adds a Character to the Cast object only if there is no other object with the same first name, last 
-        # name, and role description. The method returns True if the addition was succesful and False otherwise.
+        """
+        adds a Character to the Cast if there is no object with the same first name, last name, and role.
+        requires all three checks to pass; characters with the same first and last name (but different roles) can be added.
+        returns True if the addition was successful and False otherwise
+        """
         to_return = False
         if self.contains_first_name(first_name) and self.contains_last_name(last_name) and self.contains_role(role):
             to_return = False
@@ -139,14 +142,17 @@ class Cast:
         return to_return
     
     def remove(self, first_name: str, last_name: str, role: str) -> Character | None:
-        # removes and returns the first Character object that matches the specified first name and last name and role. 
-        # If no such object exists, the method shall return None.
+        """
+        removes and returns the first Character object that matches the given first name, last name, and role.
+        if no object exists, the method returns None,
+        """
         removed = None
+        # only look if this object exists in self
         if self.contains_first_name(first_name) and self.contains_last_name(last_name) and self.contains_role(role):
             i = 0
             index = -1
             while i < len(self.__underlying) and index == -1:
-                if self.__underlying[i].get_first_name() == first_name:
+                if (self.__underlying[i].get_first_name() == first_name) and (self.__underlying[i].get_last_name() == last_name) and (self.__underlying[i].get_role() == role):
                     index = i
                     removed = self.__underlying.pop(index)
                 i += 1
@@ -157,19 +163,25 @@ class Main:
 
     # testing adds
     cast.add_unique("aaron", "hotchner", "unit chief")
-    cast.add_unique("haley", "hotchner", "mother")
+    cast.add_unique("haley", "hotchner", "mother") # works because diff firt name and role
     cast.add_unique("emily", "prentiss", "agent")
     cast.add_unique("spencer", "reid", "agent")
     cast.add_unique("jennifer", "jareau", "media liason")
-    print(cast.add_unique("aaron", "hotchner", "unit chief"))
+    cast.add_unique("aaron", "hotchner", "unit chief") # will not add
     print(cast.report())
 
     # testing remove
     print(cast.remove("aaron", "hotchner", "unit chief"))
     print(cast.remove("emily", "prentiss", "agent"))
+    print(cast.remove("spencer", "reid", "kid")) # will not remove
 
     print(cast.report())
 
+"""
+docstring comparison
+between spencer reid and derek morgan, i think spencer reid is better. both characters get a lot of development throughout the show,
+with several episodes dedicated to each character specifically. i loved morgan's character arc 
+"""
     
 
 
