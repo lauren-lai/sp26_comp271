@@ -131,7 +131,9 @@ class Cast:
         # adds a Character to the Cast object only if there is no other object with the same first name, last 
         # name, and role description. The method returns True if the addition was succesful and False otherwise.
         to_return = False
-        if not self.contains_first_name(first_name) or not self.contains_last_name(last_name) or not self.contains_role(role):
+        if self.contains_first_name(first_name) and self.contains_last_name(last_name) and self.contains_role(role):
+            to_return = False
+        else:
             self.add_character(first_name, last_name, role)
             to_return = True
         return to_return
@@ -154,16 +156,17 @@ class Main:
     cast = Cast("Criminal Minds")
 
     # testing adds
-    cast.add_character("aaron", "hotchner", "unit chief")
-    cast.add_character("emily", "prentiss", "goat")
-    cast.add_character("spencer", "reid", "genius")
-    cast.add_character("jennifer", "jareau", "media liason")
-    cast.add_unique("haley", "hotchner", "wife") # works because diff first name and role
+    cast.add_unique("aaron", "hotchner", "unit chief")
+    cast.add_unique("haley", "hotchner", "mother")
+    cast.add_unique("emily", "prentiss", "agent")
+    cast.add_unique("spencer", "reid", "agent")
+    cast.add_unique("jennifer", "jareau", "media liason")
+    print(cast.add_unique("aaron", "hotchner", "unit chief"))
     print(cast.report())
 
     # testing remove
     print(cast.remove("aaron", "hotchner", "unit chief"))
-    print(cast.remove("emily", "prentiss", "goat"))
+    print(cast.remove("emily", "prentiss", "agent"))
 
     print(cast.report())
 
