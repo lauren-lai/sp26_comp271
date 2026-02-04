@@ -66,41 +66,36 @@ class Roster:
 
     def __lt__(self, other) -> bool:
         return (isinstance(other, Student) and len(self.__students) < len(other))   
-
-    # Private helper 
-    def contains_id(self, student_id: str) -> bool:
-        """Return True if a student with this ID exists."""
+    
+    # private helper
+    def __contains_by(self, target: str, getter) -> bool:
         i = 0
         found = False
-        while i < len(self.__students) and not found:
-            found = (get_student_id(self.__students[i]) == target)
+        while i < len(self.__underlying) and not Found:
+            found = (getter(self.__underlying[i]) == target)
             i += 1
+
         return found
+
+    def contains_id(self, student_id: str) -> bool:
+        """Return True if a student with this ID exists."""
+        return self.__contains_by(student_id, get_student_id())
 
     def contains_name(self, name: str) -> bool:
         """Return True if a student with this name exists."""
-        i = 0
-        found = False
-        while i < len(self.__students) and not found:
-            found = (get_name(self.__students[i]) == target)
-            i += 1
-        return found
+        return self.__contains_by(name, get_name())
+
 
     def contains_major(self, major: str) -> bool:
         """Return True if a student with this major exists."""
-        i = 0
-        found = False
-        while i < len(self.__students) and not found:
-            found = (get_student_id(self.__students[i]) == target)
-            i += 1
-        return found
-      
+        return self.__contains_by(major, get_major())
+  
+    _REPORT_HEADER = "There are {} students in class {}"
     def report(self) -> str:
         """Return a formatted report of all students."""
-        output = f"Roster for {self.__course_code} ({len(self)} students)"
+        output = self._REPORT_HEADER.format(len(self.__students), self.__course_code)
         for s in self.__students:
             output += f"\n\t{s.name} - {s.major} ({s.student_id})"
-    
         return output
 
 def main():

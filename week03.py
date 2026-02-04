@@ -150,11 +150,9 @@ class Cast:
         # only look if this object exists in self
         if self.contains_first_name(first_name) and self.contains_last_name(last_name) and self.contains_role(role):
             i = 0
-            index = -1
-            while i < len(self.__underlying) and index == -1:
+            while i < len(self.__underlying) and removed == None:
                 if (self.__underlying[i].get_first_name() == first_name) and (self.__underlying[i].get_last_name() == last_name) and (self.__underlying[i].get_role() == role):
-                    index = i
-                    removed = self.__underlying.pop(index)
+                    removed = self.__underlying.pop(i)
                 i += 1
         return removed
 
@@ -180,7 +178,8 @@ class Main:
 """
 docstring comparison
 between spencer reid and derek morgan, i think spencer reid is better. both characters get a lot of development throughout the show,
-with several episodes dedicated to each character specifically. i loved morgan's character arc 
+with several episodes dedicated to each character specifically. i loved morgan's character development in season 2 episode 12, 
+"profiler profiled". it was a really good arc that added a lot of depth to his personality.
 """
     
 
