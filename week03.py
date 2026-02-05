@@ -153,25 +153,39 @@ class Cast:
                 removed = self.__underlying.pop(i)
             i += 1
         return removed
+if __name__ == "__main__": 
 
-class Main:
-    cast = Cast("Criminal Minds")
+    test_data = [
+        ["Harry", "Potter", "Student"],
+        ["Hermione", "Granger", "Student"],
+        ["Ron", "Weasley", "Student"],
+        ["Albus", "Dumbledore", "Headmaster"],
+        ["Severus", "Snape", "Professor"],
+        ["Minerva", "McGonagall", "Professor"],
+        ["Rubeus", "Hagrid", "Gamekeeper"],
+        ["Draco", "Malfoy", "Student"],
+        ["Neville", "Longbottom", "Student"],
+        ["Luna", "Lovegood", "Student"],
+        ["Ginny", "Weasley", "Student"],
+        ["Fred", "Weasley", "Student"],
+        ["George", "Weasley", "Student"],
+        ["Dolores", "Umbridge", "Professor"],
+    ]
 
-    # testing adds
-    cast.add_unique("Aaron", "Hotchner", "Unit Chief")
-    cast.add_unique("Haley", "Hotchner", "Mother") # works because diff first name and role
-    cast.add_unique("Emily", "Prentiss", "Agent")
-    cast.add_unique("Spencer", "Reid", "Agent")
-    cast.add_unique("Jennifer", "Jareau", "Media Liason")
-    cast.add_unique("Aaron", "Hotchner", "Unit Chief") # will not add
-    print(cast.report())
+    test = Cast("Harry Potter")
+    for item in test_data:
+        # Magic values ok for brevity
+        test.add_character(item[0], item[1], item[2])
 
-    # testing remove
-    cast.remove("Aaron", "Hotchner", "Unit Chief")
-    cast.remove("Emily", "Prentiss", "Agent")
-    cast.remove("Spencer", "Reid", "Genius") # will not remove
+    # add_unique
+    print(test.add_unique("Dolores", "Umbridge", "Professor"))  # expect false
+    print(test.add_unique("Rubeus", "Hagrid", "Gamekeeper"))  # expect false
+    print(test.add_unique("Sirius", "Black", "Wizard"))  # expect true
+    print(test.add_unique("Sirius", "Black", "Wizard"))  # expect false
 
-    print(cast.report())
+    # remove
+    print(test.remove("Leo", "Irakliotis", "Annoying Professor"))  # expect none
+    print(test.remove("Sirius", "Black", "Wizard"))  # expect SBW
 
 """
 docstring comparison
