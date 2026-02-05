@@ -147,31 +147,29 @@ class Cast:
         if no object exists, the method returns None,
         """
         removed = None
-        # only look if this object exists in self
-        if self.contains_first_name(first_name) and self.contains_last_name(last_name) and self.contains_role(role):
-            i = 0
-            while i < len(self.__underlying) and removed == None:
-                if (self.__underlying[i].get_first_name() == first_name) and (self.__underlying[i].get_last_name() == last_name) and (self.__underlying[i].get_role() == role):
-                    removed = self.__underlying.pop(i)
-                i += 1
+        i = 0
+        while i < len(self.__underlying) and removed == None:
+            if (self.__underlying[i].get_first_name() == first_name) and (self.__underlying[i].get_last_name() == last_name) and (self.__underlying[i].get_role() == role):                    
+                removed = self.__underlying.pop(i)
+            i += 1
         return removed
 
 class Main:
     cast = Cast("Criminal Minds")
 
     # testing adds
-    cast.add_unique("aaron", "hotchner", "unit chief")
-    cast.add_unique("haley", "hotchner", "mother") # works because diff firt name and role
-    cast.add_unique("emily", "prentiss", "agent")
-    cast.add_unique("spencer", "reid", "agent")
-    cast.add_unique("jennifer", "jareau", "media liason")
-    cast.add_unique("aaron", "hotchner", "unit chief") # will not add
+    cast.add_unique("Aaron", "Hotchner", "Unit Chief")
+    cast.add_unique("Haley", "Hotchner", "Mother") # works because diff first name and role
+    cast.add_unique("Emily", "Prentiss", "Agent")
+    cast.add_unique("Spencer", "Reid", "Agent")
+    cast.add_unique("Jennifer", "Jareau", "Media Liason")
+    cast.add_unique("Aaron", "Hotchner", "Unit Chief") # will not add
     print(cast.report())
 
     # testing remove
-    print(cast.remove("aaron", "hotchner", "unit chief"))
-    print(cast.remove("emily", "prentiss", "agent"))
-    print(cast.remove("spencer", "reid", "kid")) # will not remove
+    cast.remove("Aaron", "Hotchner", "Unit Chief")
+    cast.remove("Emily", "Prentiss", "Agent")
+    cast.remove("Spencer", "Reid", "Genius") # will not remove
 
     print(cast.report())
 
@@ -179,7 +177,14 @@ class Main:
 docstring comparison
 between spencer reid and derek morgan, i think spencer reid is better. both characters get a lot of development throughout the show,
 with several episodes dedicated to each character specifically. i loved morgan's character development in season 2 episode 12, 
-"profiler profiled". it was a really good arc that added a lot of depth to his personality.
+"profiler profiled". it was a really good arc that added a lot of depth to his personality. he's also a pretty fun character overall,
+adding lot of humour and common sense to scenes that feel like they're spiraling out of control. however, i really do think spencer
+reid is a better character overall. he's portrayed as a pretty book smart kid in the earlier seasons, but he goes through so many 
+ordeals over the seasons that his character changes a lot; the background with his mom and her dementia was also really interesting to
+me. in my opinion the show writers kind of fumbled with reid's entire story though, as the show goes on i think the quality of the
+writing gets worse. they also lose a lot of the original characters (gideon, elle, hotchner, etc.) and by roughly season twelve and on,
+it feels like a completely different show. i've watched it up until around season thirteen at least twice now, and nothing compares to
+the earlier seasons.
 """
     
 
