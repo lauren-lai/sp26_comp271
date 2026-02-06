@@ -95,6 +95,10 @@ class Cast:
         new_character = Character(first_name, last_name, role)
         self.__underlying.append(new_character)
 
+    def add_actor(first_name: str, last_name: str) -> None:
+        # TODO: write this method
+        return None
+
     def index_of(self, first_name: str, last_name: str, role: str) -> int:
         """Returns the index position of a specified character object. If
         the object is not found, the method returns -1."""
@@ -124,7 +128,7 @@ class Cast:
         # Done
         return index
 
-    def add_unique(self, first_name: str, last_name: str, role: str) -> bool:
+    def add_unique_character(self, first_name: str, last_name: str, role: str) -> bool:
         """Improves class `Cast` by allowing to add a `Character` to the `Cast`
         object only if there is no other object with the same first name,
         last name, and role description. The method returns `True` if the addition
@@ -136,3 +140,5 @@ class Cast:
             # No record found, so we can add it here.
             self.add_character(first_name, last_name, role)
         return unique
+
+    def add_unique_actor(self, first_name: str, last_name: str)
