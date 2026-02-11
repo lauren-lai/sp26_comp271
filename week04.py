@@ -87,14 +87,14 @@ class Cast:
     def __str__(self) -> str:
         return f"The title of this show is {self.__title}"
 
-    _REPORT_HEADER = 'There are {} characters in your data about "{}"'
-    def report(self) -> []:
+    _REPORT_HEADER = 'There are {} entries in your data about "{}"'
+    def report(self) -> []: # modified from week03
         """Generate a nicely formatted report of all characters in the show."""
-        # output = self._REPORT_HEADER.format(len(self.__underlying), self.__title)
-        # for entry in self.__underlying:
-        #     output += f"\n\t{self.__underlying[entry]}"
-        return self.__underlying
-
+        output = self._REPORT_HEADER.format(len(self.__underlying), self.__title)
+        for i in range(len(self.__underlying)):
+            output += f"\n\t{self.__underlying[i]}"
+        return output
+        
     def add_character(self, first_name: str, last_name: str, role: str) -> None:
         """Add a new character to the show."""
         # First create a new Character object, then append it to the
@@ -113,30 +113,32 @@ class Cast:
     def index_of(self, first_name: str, last_name: str, role: str) -> int:
         """Returns the index position of a specified character object. If
         the object is not found, the method returns -1."""
-        # Assume the object is not in the underlying list
         index: int = -1
-        # Prepare to traverse the list
         i: int = 0
-        # Loop ends as soon as we find a match, by updating variable
-        # index to the position of the match, or when we search the
-        # entire list with no luck.
         while i < len(self.__underlying) and index < 0:
-            # Instead of having three references to the underlying list
-            # in the if statement below, let's assign the current item
-            # from the list to a local variable.
-            candidate = self.__underlying[i]
-            if (
-                candidate.get_first_name() == first_name
-                and candidate.get_last_name() == last_name
-                and candidate.get_role() == role
-            ):
-                # Match found at position i in the underlying list.
-                # Save this position to the return variable. This will
-                # cause the loop to end.
-                index = i
-            # Prepare to consider the next elemetn in the underlying list
-            i = i + 1
-        # Done
+            candidate = self.__underlying[i][1] # had to modify bc __underlying is a 2d list
+            if candidate != None:
+                if (
+                    candidate.get_first_name() == first_name
+                    and candidate.get_last_name() == last_name
+                    and candidate.get_role() == role
+                ):
+                    index = i
+            i = i + 1 
+        return index
+    
+    def index_of_actor(self, first_name: str, last_name: str) -> int:
+        index: int = -1
+        i: int = 0
+        while i < len(self.__underlying) and index < 0:
+            candidate = self.__underlying[i][0] # had to modify bc __underlying is a 2d list
+            if candidate != None:
+                if (
+                    candidate.get_first_name() == first_name
+                    and candidate.get_last_name() == last_name
+                ):
+                    index = i
+            i = i + 1 
         return index
 
     def add_unique_character(self, first_name: str, last_name: str, role: str) -> bool:
@@ -146,14 +148,16 @@ class Cast:
         was succesful and `False` otherwise.
         """
         found: bool = self.index_of(first_name, last_name, role) > -1
-        unique = not found  # superfluous but helps with readability
-        if unique:
-            # No record found, so we can add it here.
+        if not found:
             self.add_character(first_name, last_name, role)
-        return unique
+        return not found
 
+        
     def add_unique_actor(self, first_name: str, last_name: str):
-       pass
+        found: bool = self.index_of_actor(first_name, last_name) > -1
+        if not found:
+            self.add_actor(first_name, last_name)
+        return not found
        
     def combine_actor_character(self, Actor, Character):
         pass
@@ -172,14 +176,21 @@ class Cast:
         pass
 
 if __name__ == "__main__": 
-    print("hi")
 
     cast = Cast("The Pitt (2025)")
     print(cast)
-    print(cast.report())
 
     cast.add_character("Michael", "Robinavitch", "Chief of ED")
-    cast.add_actor("Noah", "Wyle")
+    cast.add_character("Dana", "Evans", "Charge Nurse")
+    cast.add_character("Jack", "Abbot", "Night Shift Attending")
+    print(cast.add_unique_character("Michael", "Robinavitch", "Chief of ED")) # prints False
+    print(cast.add_unique_character("Victoria", "Javadi", "3rd-Year Med Student")) # prints True
+    print(cast.report())
 
+    cast.add_actor("Noah", "Wyle")
+    cast.add_actor("Katherine", "LaNasa")
+    cast.add_actor("Shawn", "Hatosy")
+    print(cast.add_unique_actor("Katherine", "LaNasa")) # prints False
+    print(cast.add_unique_actor("Patrick", "Ball")) # prints True
 
     print(cast.report())
