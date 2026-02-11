@@ -36,7 +36,6 @@ class Actor(Person):
 
     pass
 
-
 class Character(Person):
     """Character objects extend the superclass Person by adding one more
     attribute: a description of the character's role.
@@ -64,7 +63,6 @@ class Character(Person):
         role = self.__ROLE_UNKNOWN if self.__role == "" else self.__role
         return super().__str__() + f" {role}"
 
-
 class Cast:
     """A class to represent the cast of a show, consisting of multiple
     Character objects."""
@@ -86,6 +84,17 @@ class Cast:
         Cast objects."""
         return len(self.__underlying) > 0
 
+    def __str__(self) -> str:
+        return f"The title of this show is {self.__title}"
+
+    _REPORT_HEADER = 'There are {} characters in your data about "{}"'
+    def report(self) -> []:
+        """Generate a nicely formatted report of all characters in the show."""
+        # output = self._REPORT_HEADER.format(len(self.__underlying), self.__title)
+        # for entry in self.__underlying:
+        #     output += f"\n\t{self.__underlying[entry]}"
+        return self.__underlying
+
     def add_character(self, first_name: str, last_name: str, role: str) -> None:
         """Add a new character to the show."""
         # First create a new Character object, then append it to the
@@ -93,11 +102,13 @@ class Cast:
         # done in one step, but for illustration purposes they are
         # shown separately here.
         new_character = Character(first_name, last_name, role)
-        self.__underlying.append(new_character)
+        self.__underlying.append([None, new_character])
 
-    def add_actor(first_name: str, last_name: str) -> None:
-        # TODO: write this method
-        return None
+    def add_actor(self, first_name: str, last_name: str) -> None:
+        """ Add a new actor to the show """
+        # creates and adds an actor to .__underlying, with None for the character
+        new_actor = Actor(first_name, last_name)
+        self.__underlying.append([new_actor, None])
 
     def index_of(self, first_name: str, last_name: str, role: str) -> int:
         """Returns the index position of a specified character object. If
@@ -141,4 +152,34 @@ class Cast:
             self.add_character(first_name, last_name, role)
         return unique
 
-    def add_unique_actor(self, first_name: str, last_name: str)
+    def add_unique_actor(self, first_name: str, last_name: str):
+       pass
+       
+    def combine_actor_character(self, Actor, Character):
+        pass
+        
+    def  assign_to_character(self, character_first_name, character_last_name, 
+        character_role, actor_first_name, actor_last_name) -> None:
+        # if [Actor, None] and [None, Character] -> combine into [Actor, Character]
+
+        # if just [Actor, None] -> create Character -> combine into [Actor, Character]
+
+        # if just [None, Character] -> create Actor -> combine into [Actor, Character]
+
+        # if [Actor, Character] -> do nothing
+
+        # if [None, None] -> create Character and Actor -> combine into [Actor, Character]
+        pass
+
+if __name__ == "__main__": 
+    print("hi")
+
+    cast = Cast("The Pitt (2025)")
+    print(cast)
+    print(cast.report())
+
+    cast.add_character("Michael", "Robinavitch", "Chief of ED")
+    cast.add_actor("Noah", "Wyle")
+
+
+    print(cast.report())
