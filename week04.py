@@ -110,28 +110,29 @@ class Cast:
         new_actor = Actor(first_name, last_name)
         self.__underlying.append([new_actor, None])
 
-    def index_of(self, first_name: str, last_name: str, role: str) -> int:
+    __CHARACTER_INDEX: int = 1
+    def index_of_character(self, first_name: str, last_name: str, role: str) -> int:
         """Returns the index position of a specified character object. If
         the object is not found, the method returns -1."""
         index: int = -1
         i: int = 0
         while i < len(self.__underlying) and index < 0:
-            candidate = self.__underlying[i][1] # had to modify bc __underlying is a 2d list
-            if candidate != None:
-                if (
-                    candidate.get_first_name() == first_name
-                    and candidate.get_last_name() == last_name
-                    and candidate.get_role() == role
-                ):
-                    index = i
-            i = i + 1 
+            candidate = self.__underlying[i][self.__CHARACTER_INDEX] # had to add because __underlying is a list of lists
+            if (
+                candidate.get_first_name() == first_name
+                and candidate.get_last_name() == last_name
+                and candidate.get_role() == role
+            ):
+                index = i
+            i = i + 1
         return index
     
+    __ACTOR_INDEX: int = 0
     def index_of_actor(self, first_name: str, last_name: str) -> int:
         index: int = -1
         i: int = 0
         while i < len(self.__underlying) and index < 0:
-            candidate = self.__underlying[i][0] # had to modify bc __underlying is a 2d list
+            candidate = self.__underlying[i][self.__ACTOR_INDEX]
             if candidate != None:
                 if (
                     candidate.get_first_name() == first_name
@@ -147,7 +148,7 @@ class Cast:
         last name, and role description. The method returns `True` if the addition
         was succesful and `False` otherwise.
         """
-        found: bool = self.index_of(first_name, last_name, role) > -1
+        found: bool = self.index_of_character(first_name, last_name, role) > -1
         if not found:
             self.add_character(first_name, last_name, role)
         return not found
