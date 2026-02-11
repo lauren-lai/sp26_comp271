@@ -118,12 +118,13 @@ class Cast:
         i: int = 0
         while i < len(self.__underlying) and index < 0:
             candidate = self.__underlying[i][self.__CHARACTER_INDEX] # had to add because __underlying is a list of lists
-            if (
-                candidate.get_first_name() == first_name
-                and candidate.get_last_name() == last_name
-                and candidate.get_role() == role
-            ):
-                index = i
+            if candidate != None:
+                if (
+                    candidate.get_first_name() == first_name
+                    and candidate.get_last_name() == last_name
+                    and candidate.get_role() == role
+                ):
+                    index = i
             i = i + 1
         return index
     
@@ -134,11 +135,12 @@ class Cast:
         while i < len(self.__underlying) and index < 0:
             candidate = self.__underlying[i][self.__ACTOR_INDEX]
             if candidate != None:
-                if (
-                    candidate.get_first_name() == first_name
-                    and candidate.get_last_name() == last_name
-                ):
-                    index = i
+                if candidate != None:
+                    if (
+                        candidate.get_first_name() == first_name
+                        and candidate.get_last_name() == last_name
+                    ):
+                        index = i
             i = i + 1 
         return index
 
@@ -152,22 +154,40 @@ class Cast:
         if not found:
             self.add_character(first_name, last_name, role)
         return not found
-
         
     def add_unique_actor(self, first_name: str, last_name: str):
         found: bool = self.index_of_actor(first_name, last_name) > -1
         if not found:
             self.add_actor(first_name, last_name)
         return not found
+
+    def remove_entry(self, index: int):
+        self.__underlying.pop(index)
        
-    def combine_actor_character(self, Actor, Character):
-        pass
+    def combine_actor_character(self, actor: Actor, character: Character):
+        self.__underlying.append([actor, character])
         
-    def  assign_to_character(self, character_first_name, character_last_name, 
+    def assign_to_character(self, character_first_name, character_last_name, 
         character_role, actor_first_name, actor_last_name) -> None:
+        
+        character_index = self.index_of_character(character_first_name, character_last_name, character_role)
+        actor_index = self.index_of_actor(actor_first_name, actor_last_name)
+        print(character_index)
+        print(actor_index)
+        
+        character = Character(character_first_name, character_last_name, character_role)
+        actor = Actor(actor_first_name, actor_last_name)
+        print(character)
+        print(actor)
+
         # if [Actor, None] and [None, Character] -> combine into [Actor, Character]
+        if (actor_index != -1) and (character_index != -1):
+            self.remove_entry(actor_index)
+            self.remove_entry(character_index)
+            self.combine_actor_character(actor, character)
 
         # if just [Actor, None] -> create Character -> combine into [Actor, Character]
+
 
         # if just [None, Character] -> create Actor -> combine into [Actor, Character]
 
@@ -182,7 +202,6 @@ if __name__ == "__main__":
     print(cast)
 
     cast.add_character("Michael", "Robinavitch", "Chief of ED")
-    cast.add_character("Dana", "Evans", "Charge Nurse")
     cast.add_character("Jack", "Abbot", "Night Shift Attending")
     print(cast.add_unique_character("Michael", "Robinavitch", "Chief of ED")) # prints False
     print(cast.add_unique_character("Victoria", "Javadi", "3rd-Year Med Student")) # prints True
@@ -190,8 +209,12 @@ if __name__ == "__main__":
 
     cast.add_actor("Noah", "Wyle")
     cast.add_actor("Katherine", "LaNasa")
-    cast.add_actor("Shawn", "Hatosy")
     print(cast.add_unique_actor("Katherine", "LaNasa")) # prints False
     print(cast.add_unique_actor("Patrick", "Ball")) # prints True
+
+    cast.assign_to_character("Michael", "Robinavitch", "Chief of ED", "Noah", "Wyle") # actor and character
+    # cast.assign_to_character("Dana", "Evans", "Charge Nurse", "Katherine", "LaNasa") # actor no character
+    # cast.assign_to_character("Jack", "Abbot", "Night Shift Attending", "Shawn", "Hatosy") # no actor and character
+    # cast.assign_to_character("Trinity", "Santos", "Goat", "Isa", "Briones") # no actor no character
 
     print(cast.report())
