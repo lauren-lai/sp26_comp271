@@ -180,42 +180,232 @@ class Cast:
 
         # if [Actor, None] and [None, Character] -> combine into [Actor, Character]
         if (actor_index != -1) and (character_index != -1):
-            self.remove_entry(actor_index)
-            self.remove_entry(character_index)
             self.combine_actor_character(actor, character)
+            self.remove_entry(actor_index)
+            character_index -= 1 # list decreased by 1
+            self.remove_entry(character_index)
         # if just [Actor, None] -> create Character -> combine into [Actor, Character]
         elif (actor_index != -1) and (character_index == -1):
-            self.remove_entry(actor_index)
             self.combine_actor_character(actor, character)
+            self.remove_entry(actor_index)
         # if just [None, Character] -> create Actor -> combine into [Actor, Character]
         elif (actor_index == -1) and (character_index != -1):
-            self.remove_entry(character_index)
             self.combine_actor_character(actor, character)
+            self.remove_entry(character_index)
         # if [None, None] -> create Character and Actor -> combine into [Actor, Character]
         elif (actor_index == -1) and (character_index == -1):
             self.combine_actor_character(actor, character)
         # if [Actor, Character] -> do nothing
 
 
-if __name__ == "__main__": 
+# if __name__ == "__main__": 
+#     cast = Cast("The Pitt (2025)")
+#     print(cast)
 
-    cast = Cast("The Pitt (2025)")
-    print(cast)
+#     cast.add_character("Michael", "Robinavitch", "Chief of ED")
+#     cast.add_character("Jack", "Abbot", "Night Shift Attending")
+#     print(cast.add_unique_character("Michael", "Robinavitch", "Chief of ED")) # prints False
+#     print(cast.add_unique_character("Victoria", "Javadi", "3rd-Year Med Student")) # prints True
 
-    cast.add_character("Michael", "Robinavitch", "Chief of ED")
-    cast.add_character("Jack", "Abbot", "Night Shift Attending")
-    print(cast.add_unique_character("Michael", "Robinavitch", "Chief of ED")) # prints False
-    print(cast.add_unique_character("Victoria", "Javadi", "3rd-Year Med Student")) # prints True
-    print(cast.report())
+#     cast.add_actor("Noah", "Wyle")
+#     cast.add_actor("Katherine", "LaNasa")
+#     print(cast.add_unique_actor("Katherine", "LaNasa")) # prints False
+#     print(cast.add_unique_actor("Patrick", "Ball")) # prints True
 
-    cast.add_actor("Noah", "Wyle")
-    cast.add_actor("Katherine", "LaNasa")
-    print(cast.add_unique_actor("Katherine", "LaNasa")) # prints False
-    print(cast.add_unique_actor("Patrick", "Ball")) # prints True
+#     print(cast.report())
 
-    cast.assign_to_character("Michael", "Robinavitch", "Chief of ED", "Noah", "Wyle") # actor and character
-    cast.assign_to_character("Dana", "Evans", "Charge Nurse", "Katherine", "LaNasa") # actor no character
-    cast.assign_to_character("Jack", "Abbot", "Night Shift Attending", "Shawn", "Hatosy") # no actor and character
-    cast.assign_to_character("Trinity", "Santos", "Goat", "Isa", "Briones") # no actor no character
+#     cast.assign_to_character("Michael", "Robinavitch", "Chief of ED", "Noah", "Wyle") # actor and character
+#     print(cast.report())
+#     cast.assign_to_character("Dana", "Evans", "Charge Nurse", "Katherine", "LaNasa") # actor no character
+#     print(cast.report())
+#     cast.assign_to_character("Jack", "Abbot", "Night Shift Attending", "Shawn", "Hatosy") # no actor and character
+#     print(cast.report())
+#     cast.assign_to_character("Trinity", "Santos", "Goat", "Isa", "Briones") # no actor no character
 
-    print(cast.report())
+#     print(cast.report())
+
+class TestCast(Cast):
+    """Extend Cast to allow access to the underlying list for testing purposes. 
+    This is not a good practice in general, but it is done here for 
+    testing purposes only."""
+
+    def __init__(self, title: str):
+        super().__init__(title)
+
+    def get_underlying(self):
+        return self._Cast__underlying
+
+
+# Testing data for characters
+test_data_characters = [
+    ("Nyota", "Uhura", "Communications Officer"),
+    ("Leonard", "McCoy", "Chief Medical Officer"),
+    ("Spock", "", "Science Officer"),
+]
+
+# Testing data for actors
+test_data_actors = [
+    ("Zoe", "Saldana"),
+    ("Karl", "Urban"),
+    ("Zachary", "Quinto"),
+]
+
+# Testing add_character()
+test = TestCast("misc")
+
+for f, l, r in test_data_characters:
+    test.add_character(f, l, r)
+
+under = test.get_underlying()
+
+test_character_only = True
+for u in under:
+    a, c = u
+    test_character_only = test_character_only and a is None and c is not None
+    first_name = c.get_first_name()
+    last_name = c.get_last_name()
+    role = c.get_role()
+    test_character_only = (
+        test_character_only and (first_name, last_name, role) in test_data_characters
+    )
+print("                          add_character() test passed:", test_character_only)
+
+# Testing add_actor()
+test = TestCast("misc")
+
+for f, l in test_data_actors:
+    test.add_actor(f, l)
+
+under = test.get_underlying()
+test_actor_only = True
+for u in under:
+    a, c = u
+    test_actor_only = test_actor_only and a is not None and c is None
+    first_name = a.get_first_name()
+    last_name = a.get_last_name()
+    test_actor_only = test_actor_only and (first_name, last_name) in test_data_actors
+print("                              add_actor() test passed:", test_actor_only)
+
+# Prepare to test disjoined add_actor() and add_character() by adding
+# characters to be matched to existing actors
+for f, l, r in test_data_characters:
+    test.add_character(f, l, r)
+
+under = test.get_underlying()
+# Simple test to check that the number of entries in the underlying
+# list is equal to the sum of the number of characters and actors
+# added, which would be the case if add_actor() and add_character()
+# are disjoined.
+test_disjoined = len(under) == len(test_data_characters) + len(test_data_actors)
+print("Disjoined add_actor() and add_character() test passed:", test_disjoined)
+
+# Testing assign_to_character()
+test.assign_to_character("Spock", "", "Science Officer", "Zachary", "Quinto")
+under = test.get_underlying()
+test_assignment = False
+for u in under:
+    a, c = u
+    if (
+        a is not None
+        and c is not None
+        and a.get_first_name() == "Zachary"
+        and a.get_last_name() == "Quinto"
+        and c.get_first_name() == "Spock"
+        and c.get_last_name() == ""
+        and c.get_role() == "Science Officer"
+    ):
+        test_assignment = True
+print("                    assign_to_character() test passed:", test_assignment)
+
+# Testing additional disjoined cases by simply verifying that the number of
+# entries in the underlying list is equal to the sum of the number of characters
+# and actors added, which would be the case if add_actor() and add_character()
+#  are disjoined.
+test.assign_to_character("Leonard", "McCoy", "Chief Medical Officer", "Karl", "Urban")
+test.assign_to_character("Nyota", "Uhura", "Communications Officer", "Zoe", "Saldana")
+under = test.get_underlying()
+test_full_assignment = len(under) == 3
+print("               Full assign_to_character() test passed:", test_full_assignment)
+
+# Testing add_unique_character() and add_unique_actor() by trying to add
+# duplicates and verifying that the method returns False and that the
+# underlying list is not updated.
+under = test.get_underlying()
+same_length = len(under) == 3
+test_uc = (
+    test.add_unique_character("Leonard", "McCoy", "Chief Medical Officer")
+    and same_length
+)
+test_ua = test.add_unique_actor("Karl", "Urban") and same_length
+print("                   add_unique_character() test passed:", not test_uc)
+print("                       add_unique_actor() test passed:", not test_ua)
+
+# Testing add_unique_character() and add_unique_actor() by trying to add
+# new entries and verifying that the method returns True and that the
+# underlying list is updated.
+test.add_unique_character("Hikaru", "Sulu", "Helmsman")
+test.assign_to_character("Hikaru", "Sulu", "Helmsman", "John", "Cho")
+under = test.get_underlying()
+test_add_unique_and_assign = False
+for u in under:
+    a, c = u
+    if (
+        a is not None
+        and c is not None
+        and a.get_first_name() == "John"
+        and a.get_last_name() == "Cho"
+        and c.get_first_name() == "Hikaru"
+        and c.get_last_name() == "Sulu"
+        and c.get_role() == "Helmsman"
+    ):
+        test_add_unique_and_assign = True
+print(
+    "         assign_to_character() Actor-only test passed:", test_add_unique_and_assign
+)
+
+# Testing add_unique_actor() and assign_to_character() by trying to add a 
+# new actor and assign it to an existing character, and verifying that 
+# the method returns True and that the underlying list is updated.
+test.add_unique_actor("Benedict", "Cumberbatch")
+test.assign_to_character("Khan", "Noonien Singh", "Eugenics Villain", "Benedict", "Cumberbatch")
+under = test.get_underlying()
+test_add_unique_and_assign = False
+for u in under:
+    a, c = u
+    if (
+        a is not None
+        and c is not None
+        and a.get_first_name() == "Benedict"
+        and a.get_last_name() == "Cumberbatch"
+        and c.get_first_name() == "Khan"
+        and c.get_last_name() == "Noonien Singh"
+        and c.get_role() == "Eugenics Villain"
+    ):
+        test_add_unique_and_assign = True
+print(
+    "     assign_to_character() Character-only test passed:",
+    test_add_unique_and_assign,
+)
+
+#  Test assign_to_character() by trying to assign two totally new
+#  entries and verifying that the underlying list is updated with a new
+#  [Actor, Character] pair.
+test.assign_to_character("Montgomery", "Scott", "Chief Engineer", "Simon", "Pegg")
+under = test.get_underlying()
+test_add_unique_and_assign = False
+for u in under:
+    a, c = u
+    if (
+        a is not None
+        and c is not None
+        and a.get_first_name() == "Simon"
+        and a.get_last_name() == "Pegg"
+        and c.get_first_name() == "Montgomery"
+        and c.get_last_name() == "Scott"
+        and c.get_role() == "Chief Engineer"
+    ):
+        test_add_unique_and_assign = True
+print(
+    "assign_to_character() Actor and Character test passed:",
+    test_add_unique_and_assign,
+)
