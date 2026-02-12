@@ -198,32 +198,6 @@ class Cast:
         # if [Actor, Character] -> do nothing
 
 
-# if __name__ == "__main__": 
-#     cast = Cast("The Pitt (2025)")
-#     print(cast)
-
-#     cast.add_character("Michael", "Robinavitch", "Chief of ED")
-#     cast.add_character("Jack", "Abbot", "Night Shift Attending")
-#     print(cast.add_unique_character("Michael", "Robinavitch", "Chief of ED")) # prints False
-#     print(cast.add_unique_character("Victoria", "Javadi", "3rd-Year Med Student")) # prints True
-
-#     cast.add_actor("Noah", "Wyle")
-#     cast.add_actor("Katherine", "LaNasa")
-#     print(cast.add_unique_actor("Katherine", "LaNasa")) # prints False
-#     print(cast.add_unique_actor("Patrick", "Ball")) # prints True
-
-#     print(cast.report())
-
-#     cast.assign_to_character("Michael", "Robinavitch", "Chief of ED", "Noah", "Wyle") # actor and character
-#     print(cast.report())
-#     cast.assign_to_character("Dana", "Evans", "Charge Nurse", "Katherine", "LaNasa") # actor no character
-#     print(cast.report())
-#     cast.assign_to_character("Jack", "Abbot", "Night Shift Attending", "Shawn", "Hatosy") # no actor and character
-#     print(cast.report())
-#     cast.assign_to_character("Trinity", "Santos", "Goat", "Isa", "Briones") # no actor no character
-
-#     print(cast.report())
-
 class TestCast(Cast):
     """Extend Cast to allow access to the underlying list for testing purposes. 
     This is not a good practice in general, but it is done here for 
@@ -408,4 +382,30 @@ for u in under:
 print(
     "assign_to_character() Actor and Character test passed:",
     test_add_unique_and_assign,
+
+# if __name__ == "__main__": 
+#     cast = Cast("The Pitt (2025)")
+#     print(cast)
+
+#     cast.add_character("Michael", "Robinavitch", "Chief of ED")
+#     cast.add_character("Jack", "Abbot", "Night Shift Attending")
+#     print(cast.add_unique_character("Michael", "Robinavitch", "Chief of ED")) # prints False
+#     print(cast.add_unique_character("Victoria", "Javadi", "3rd-Year Med Student")) # prints True
+
+#     cast.add_actor("Noah", "Wyle")
+#     cast.add_actor("Katherine", "LaNasa")
+#     print(cast.add_unique_actor("Katherine", "LaNasa")) # prints False
+#     print(cast.add_unique_actor("Patrick", "Ball")) # prints True
+
+#     print(cast.report())
+
+#     cast.assign_to_character("Michael", "Robinavitch", "Chief of ED", "Noah", "Wyle") # actor and character
+#     print(cast.report())
+#     cast.assign_to_character("Dana", "Evans", "Charge Nurse", "Katherine", "LaNasa") # actor no character
+#     print(cast.report())
+#     cast.assign_to_character("Jack", "Abbot", "Night Shift Attending", "Shawn", "Hatosy") # no actor and character
+#     print(cast.report())
+#     cast.assign_to_character("Trinity", "Santos", "Goat", "Isa", "Briones") # no actor no character
+
+#     print(cast.report())
 )
