@@ -61,7 +61,7 @@ class Character(Person):
         string function of the superclass object and concatenates
         a string with the role information."""
         role = self.__ROLE_UNKNOWN if self.__role == "" else self.__role
-        return super().__str__() + f" {role}"
+        return super().__str__() + f", {role}"
 
 class Cast:
     """A class to represent the cast of a show, consisting of multiple
@@ -169,32 +169,33 @@ class Cast:
         
     def assign_to_character(self, character_first_name, character_last_name, 
         character_role, actor_first_name, actor_last_name) -> None:
-        
+
+        # checks if the character and actor already exist in __underlying
         character_index = self.index_of_character(character_first_name, character_last_name, character_role)
         actor_index = self.index_of_actor(actor_first_name, actor_last_name)
-        print(character_index)
-        print(actor_index)
         
+        # creates Character and Actor objects
         character = Character(character_first_name, character_last_name, character_role)
         actor = Actor(actor_first_name, actor_last_name)
-        print(character)
-        print(actor)
 
         # if [Actor, None] and [None, Character] -> combine into [Actor, Character]
         if (actor_index != -1) and (character_index != -1):
             self.remove_entry(actor_index)
             self.remove_entry(character_index)
             self.combine_actor_character(actor, character)
-
         # if just [Actor, None] -> create Character -> combine into [Actor, Character]
-
-
+        elif (actor_index != -1) and (character_index == -1):
+            self.remove_entry(actor_index)
+            self.combine_actor_character(actor, character)
         # if just [None, Character] -> create Actor -> combine into [Actor, Character]
-
+        elif (actor_index == -1) and (character_index != -1):
+            self.remove_entry(character_index)
+            self.combine_actor_character(actor, character)
+        # if [None, None] -> create Character and Actor -> combine into [Actor, Character]
+        elif (actor_index == -1) and (character_index == -1):
+            self.combine_actor_character(actor, character)
         # if [Actor, Character] -> do nothing
 
-        # if [None, None] -> create Character and Actor -> combine into [Actor, Character]
-        pass
 
 if __name__ == "__main__": 
 
@@ -213,8 +214,8 @@ if __name__ == "__main__":
     print(cast.add_unique_actor("Patrick", "Ball")) # prints True
 
     cast.assign_to_character("Michael", "Robinavitch", "Chief of ED", "Noah", "Wyle") # actor and character
-    # cast.assign_to_character("Dana", "Evans", "Charge Nurse", "Katherine", "LaNasa") # actor no character
-    # cast.assign_to_character("Jack", "Abbot", "Night Shift Attending", "Shawn", "Hatosy") # no actor and character
-    # cast.assign_to_character("Trinity", "Santos", "Goat", "Isa", "Briones") # no actor no character
+    cast.assign_to_character("Dana", "Evans", "Charge Nurse", "Katherine", "LaNasa") # actor no character
+    cast.assign_to_character("Jack", "Abbot", "Night Shift Attending", "Shawn", "Hatosy") # no actor and character
+    cast.assign_to_character("Trinity", "Santos", "Goat", "Isa", "Briones") # no actor no character
 
     print(cast.report())
