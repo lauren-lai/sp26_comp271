@@ -145,6 +145,7 @@ class Deities(PantheonADT):
             - Use change_domain(...) to update an existing god.
         """
 
+
     def change_domain(self, god_name: str, new_domain: str) -> bool:
         """
         Change the domain of an already-registered god.
@@ -202,7 +203,7 @@ class Deities(PantheonADT):
         Returns:
             True if present, otherwise False.
         """
-
+        
 
 
     def count(self) -> int:
