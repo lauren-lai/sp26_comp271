@@ -152,8 +152,9 @@ class LinkedTrainLine(TrainLine):
     def remove(self, name: str) -> bool:
         prev: _Node | None = None
         current = self._head
+        removed = False
 
-        while current is not None:
+        while (current is not None) and (removed == False): # not at the end of list and not removed
             if current.data == name:
                 if prev is None:
                     # removing head
@@ -162,12 +163,12 @@ class LinkedTrainLine(TrainLine):
                     prev.next = current.next
 
                 self._size -= 1
-                return True
+                removed = True
 
             prev = current
             current = current.next
 
-        return False
+        return removed
 
     def to_list(self) -> list[str]:
         result: list[str] = []
