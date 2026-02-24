@@ -259,3 +259,100 @@ class Performance(ABC):
         to its type of event.
         """
         ...
+
+
+class Concert(Performance):
+    """
+    Implements Performance to represent a music concert
+    """
+
+    def __init__(
+        self, title: str, duration_minutes: int, base_ticket_price: float, artist_name: str, genre: str, has_vip: bool
+    ) -> None:
+        
+        self._title: str = title
+        self._duration_minutes: int = duration_minutes
+        self._base_ticket_price: float = base_ticket_price
+        self.__artist_name: str = artist_name
+        self.__genre: str = genre
+        self.__has_vip: bool = has_vip
+
+        # Number of audience members currently admitted.
+        # Starts at zero and increases via admit_audience().
+        self._audience_count: int = 0
+
+    # ---------------------------------------------------------
+    # Concrete (Fully Implemented) Methods
+    # These are inherited as-is by subclasses.
+    # ---------------------------------------------------------
+
+    def __str__(self) -> str:
+        """
+        General string representation.
+
+        We call describe() here so that when a Performance
+        object is printed, the subclass version of describe()
+        is used automatically (polymorphism in action).
+        """
+        return self.describe()
+
+    def admit_audience(self, number: int) -> None:
+        """
+        Adds audience members to the performance.
+
+        Only positive numbers are accepted.
+        """
+        if number > 0:
+            self._audience_count += number
+
+    def get_title(self) -> str:
+        """Returns the performance title."""
+        return self._title
+
+    def get_duration(self) -> int:
+        """Returns the duration in minutes."""
+        return self._duration_minutes
+
+    def get_audience_count(self) -> int:
+        """Returns the number of admitted audience members."""
+        return self._audience_count
+
+    def get_artist_name(self) -> str:
+        """ returns the artist name """
+        return self.__artist_name
+
+    def get_genre(self) -> str:
+        """ returns the genre """
+        return self.__genre
+    
+    def has_vip(self) -> bool:
+        """ returns True if there is a vip, False otherwise """
+        return self.__has_vip
+
+    def get_base_ticket_price(self) -> float:
+        """
+        Returns the base ticket price.
+
+        Subclasses may use this value as the starting point
+        for their own pricing logic.
+        """
+        return self._base_ticket_price
+
+    def get_adjusted_ticket_price(self) -> float:
+        """
+        increases the ticket price by 40% if the concert has a vip, otherwise returns the base ticket price
+        """
+        return (self.get_base_ticket_price() * 0.4) + self.get_base_ticket_price() if self.has_vip() else self.get_base_ticket_price()
+
+    def calculate_revenue(self) -> float:
+        """
+        returns the expected revenue, audience count x adjusted ticket price
+        """
+        return self.get_audience_count() * self.get_adjusted_ticket_price()
+    
+    _DESCRIBE_HEADER = "This concert features {}, an artist in {} genre. The concert is {} minutes long."
+    def describe(self) -> str:
+        """
+        Returns a string description of the concert, including the artist's name, genre, and the concert duration.
+        """
+        return self._DESCRIBE_HEADER.format(self.get_artist_name(), self.get_genre(), self.get_duration())
