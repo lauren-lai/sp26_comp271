@@ -269,22 +269,12 @@ class Concert(Performance):
     def __init__(
         self, title: str, duration_minutes: int, base_ticket_price: float, artist_name: str, genre: str, has_vip: bool
     ) -> None:
-        
-        self._title: str = title
-        self._duration_minutes: int = duration_minutes
-        self._base_ticket_price: float = base_ticket_price
+
+        super.__init__(title, duration_minutes, base_ticket_price)
+    
         self.__artist_name: str = artist_name
         self.__genre: str = genre
         self.__has_vip: bool = has_vip
-
-        # Number of audience members currently admitted.
-        # Starts at zero and increases via admit_audience().
-        self._audience_count: int = 0
-
-    # ---------------------------------------------------------
-    # Concrete (Fully Implemented) Methods
-    # These are inherited as-is by subclasses.
-    # ---------------------------------------------------------
 
     def __str__(self) -> str:
         """
@@ -356,3 +346,81 @@ class Concert(Performance):
         Returns a string description of the concert, including the artist's name, genre, and the concert duration.
         """
         return self._DESCRIBE_HEADER.format(self.get_artist_name(), self.get_genre(), self.get_duration())
+
+
+
+class Lecture(Performance):
+    """
+    Implements Performance to represent a university Lecture
+    """
+
+    def __init__(
+        self, title: str, duration_minutes: int, base_ticket_price: float, speaker_name: str, is_university_event: bool
+    ) -> None:
+
+        super.__init__(title, duration_minutes, base_ticket_price)
+
+        self.__speaker_name = speaker_name
+        self.__is_university_event = is_university_event
+
+
+    def __str__(self) -> str:
+        """
+        General string representation.
+
+        We call describe() here so that when a Performance
+        object is printed, the subclass version of describe()
+        is used automatically (polymorphism in action).
+        """
+        return self.describe()
+
+    def admit_audience(self, number: int) -> None:
+        """
+        Adds audience members to the performance.
+
+        Only positive numbers are accepted.
+        """
+        if number > 0:
+            self._audience_count += number
+
+    def get_title(self) -> str:
+        """Returns the performance title."""
+        return self._title
+
+    def get_duration(self) -> int:
+        """Returns the duration in minutes."""
+        return self._duration_minutes
+
+    def get_audience_count(self) -> int:
+        """Returns the number of admitted audience members."""
+        return self._audience_count
+
+    def get_base_ticket_price(self) -> float:
+        """
+        Returns the base ticket price.
+
+        Subclasses may use this value as the starting point
+        for their own pricing logic.
+        """
+        return self._base_ticket_price
+
+    def calculate_revenue(self) -> float:
+        """
+        Compute total revenue for the performance.
+
+        Subclasses decide how ticket price is adjusted
+        (VIP upgrades, student discounts, special pricing, etc.).
+
+        The result should reflect:
+            audience_count × adjusted_ticket_price
+        """
+        ...
+
+    def describe(self) -> str:
+        """
+        Return a human-readable description of the performance.
+
+        Each subclass should include details specific
+        to its type of event.
+        """
+        ...
