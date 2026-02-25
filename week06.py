@@ -270,7 +270,7 @@ class Concert(Performance):
         self, title: str, duration_minutes: int, base_ticket_price: float, artist_name: str, genre: str, has_vip: bool
     ) -> None:
 
-        super.__init__(title, duration_minutes, base_ticket_price)
+        super().__init__(title, duration_minutes, base_ticket_price)
     
         self.__artist_name: str = artist_name
         self.__genre: str = genre
@@ -358,7 +358,7 @@ class Lecture(Performance):
         self, title: str, duration_minutes: int, base_ticket_price: float, speaker_name: str, is_university_event: bool
     ) -> None:
 
-        super.__init__(title, duration_minutes, base_ticket_price)
+        super().__init__(title, duration_minutes, base_ticket_price)
 
         self.__speaker_name = speaker_name
         self.__is_university_event = is_university_event
@@ -428,4 +428,24 @@ class Lecture(Performance):
         to its type of event.
         """
         word = "is" if self.is_university_event() else "is not"
-        return _DESCRIBE_HEADER.format(self.get_speaker(), word)
+        return self._DESCRIBE_HEADER.format(self.get_speaker(), word)
+
+
+
+def main() -> None:
+
+    events: list[Performance] = [
+        Concert("Summer Blast", 120, 50.0, "The Meteors", "Rock", True),
+        Lecture("AI and Society", 90, 30.0, "Dr. Kwan", True)
+    ]   
+    events[0].admit_audience(100)
+    events[1].admit_audience(100)
+
+    for event in events:
+        print(event.describe())
+        print(f"The revenue from this event is {event.calculate_revenue()}\n")
+
+    print(f"The total revenue is {events[0].calculate_revenue() + events[1].calculate_revenue()}")
+
+if __name__ == "__main__":
+    main()
