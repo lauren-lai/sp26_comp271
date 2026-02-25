@@ -308,7 +308,7 @@ class Concert(Performance):
         return self._audience_count
 
     def get_artist_name(self) -> str:
-        """ returns the artist name """
+        """ returns the artist's name """
         return self.__artist_name
 
     def get_genre(self) -> str:
@@ -391,9 +391,16 @@ class Lecture(Performance):
         """Returns the duration in minutes."""
         return self._duration_minutes
 
+    def get_speaker(self) -> str:
+        """ returns the speaker's name """
+        return self.__speaker_name
+
     def get_audience_count(self) -> int:
         """Returns the number of admitted audience members."""
         return self._audience_count
+
+    def is_university_event(self) -> bool:
+        return self.__is_university_event
 
     def get_base_ticket_price(self) -> float:
         """
@@ -404,18 +411,15 @@ class Lecture(Performance):
         """
         return self._base_ticket_price
 
+    def get_adjusted_ticket_price(self) -> float:
+        """ discounts the ticket price by 50% if this is a university event, returns the base price otherwise """
+        return self.get_base_ticket_price() * 0.5 if self.is_university_event() else self.get_base_ticket_price()
+
     def calculate_revenue(self) -> float:
-        """
-        Compute total revenue for the performance.
+        """ returns the calculated revenue, audience x adjusted price """
+        return self.get_audience_count() * self.get_adjusted_ticket_price()
 
-        Subclasses decide how ticket price is adjusted
-        (VIP upgrades, student discounts, special pricing, etc.).
-
-        The result should reflect:
-            audience_count × adjusted_ticket_price
-        """
-        ...
-
+    _DESCRIBE_HEADER = "This event features {}, and {} a university event."
     def describe(self) -> str:
         """
         Return a human-readable description of the performance.
@@ -423,4 +427,5 @@ class Lecture(Performance):
         Each subclass should include details specific
         to its type of event.
         """
-        ...
+        word = "is" if self.is_university_event() else "is not"
+        return _DESCRIBE_HEADER.format(self.get_speaker(), word)
