@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod  # Authorized import for derived classes
 # 345678901234567890123456789012345678901234567890123456789012345678901234567890
 
 
-
+# PART 1 ---------------------------------------------------------------------------------------------------
 class Node:
     """A simple linkable object. The node comprises two fields: a value field,
     here typed a string, and a pointer field to the next node. The default is
@@ -73,11 +73,23 @@ class LinkedList:
 
     Every node, in the linked list, is connected to another node. Except for
     the last node that points to None.
+
+    Problem 1:
+
+
+    Problem 2:
+        In the same way that LinkedList contains the __head attribute, it can also have a __count attribute representing the number of
+        nodes in the list. __count intializes as 0 because the the linked list initializes empty, and every time add() is called it
+        increments by 1. count() is modified to return the __count attribute instead of iterating through the entire list each time.
+
+    Problem 3:
     """
 
     def __init__(self) -> None:
         """Instantiate an empty linked list"""
         self.__head: Node | None = None
+        self.__tail = None
+        self.__count = 0
 
     # Constants for string representation of the linked list
     __EMPTY_LIST_STR: str = "Empty List"
@@ -129,21 +141,38 @@ class LinkedList:
             # linked list. Now we place the new node after the current node
             # and we are done.
             current.set_next(new_node)
+        self.__count += 1
 
     def count(self) -> int:
         """Counts the number of nodes in the object and returns it"""
-        # Initialize the return item
-        counter: int = 0
-        # Start at the beginning of the linked list
-        current: Node = self.__head
-        # Go through every node, increasing the counter, until we
-        # reach the last node and it takes out outside the linked list
-        while current is not None:
-            counter += 1
-            current = current.get_next()
-        return counter
+        # # Initialize the return item
+        # counter: int = 0
+        # # Start at the beginning of the linked list
+        # current: Node = self.__head
+        # # Go through every node, increasing the counter, until we
+        # # reach the last node and it takes out outside the linked list
+        # while current is not None:
+        #     counter += 1
+        #     current = current.get_next()
+        return self.__count
 
+    def insert(self, new_value: str, after_value: str) -> bool:
+        inserted = False
+        insert_node = Node(new_value)
+        current = self.__head # start iterating from beginning of list
 
+        while current.has_next() and not inserted:
+            if current == after_value:
+                original_next = current.get_next()
+                insert_node.set_next(original_next) # connects the new node with the following part of the list
+                current.set_next(new_node) # connects the beginning of the list with the new node
+                inserted = True
+            else:
+                current = current.get_next()
+
+        return inserted
+
+# PART 2 ---------------------------------------------------------------------------------------------------
 
 class Performance(ABC):
     """
