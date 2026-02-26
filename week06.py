@@ -82,7 +82,6 @@ class LinkedList:
         nodes in the list. __count intializes as 0 because the the linked list initializes empty, and every time add() is called it
         increments by 1. count() is modified to return the __count attribute instead of iterating through the entire list each time.
 
-    Problem 3:
     """
 
     def __init__(self) -> None:
@@ -161,8 +160,8 @@ class LinkedList:
         insert_node = Node(new_value)
         current = self.__head # start iterating from beginning of list
 
-        while current.has_next() and not inserted:
-            if current == after_value:
+        while (current.has_next() and not inserted) or (current.get_value() == after_value): # second check for after_value being the last item
+            if current.get_value() == after_value:
                 original_next = current.get_next()
                 insert_node.set_next(original_next) # connects the new node with the following part of the list
                 current.set_next(new_node) # connects the beginning of the list with the new node
