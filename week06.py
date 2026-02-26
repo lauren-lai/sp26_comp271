@@ -445,7 +445,8 @@ def main() -> None:
         print(event.describe())
         print(f"The revenue from this event is {event.calculate_revenue()}\n")
 
-    print(f"The total revenue is {events[0].calculate_revenue() + events[1].calculate_revenue()}")
+    total_revenue = events[0].calculate_revenue() + events[1].calculate_revenue()
+    print(f"The total revenue is {total_revenue}")
 
 if __name__ == "__main__":
     main()
