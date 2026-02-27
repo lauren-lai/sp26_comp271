@@ -167,20 +167,21 @@ class LinkedList:
         inserted = False
         new_node = Node(new_value)
         current = self.__head # start iterating from beginning of list
-
-        if current is None:
-            inserted = False # change nothing if list is empty
-        elif (current.get_value() == after_value) and (current.get_next() is None): # in the case that after_value is the last item
-            current.set_next(new_node)
-        else:
+        if current is not None:
+            print(f"STARTING AT {current.get_value()}")
             while current.has_next() and inserted == False:
+                print(current.get_value())
                 if current.get_value() == after_value:
-                    current_next = current.get_next()
-                    new_node.set_next(current_next)
-                    curret.set_next(new_node)
+                    print("equals after_value")
+                    old_next = current.get_next()
+                    print(f"old next is {old_next}")
                     inserted = True
-                else:
-                    current = current.get_next()
+                current = current.get_next()
+        else:
+            print("current was none")
+    
+        return inserted
+
 
 # PART 2 ---------------------------------------------------------------------------------------------------
 
