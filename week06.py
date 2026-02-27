@@ -172,7 +172,7 @@ class LinkedList:
             if current.get_value() == after_value:
                 original_next = current.get_next()
                 insert_node.set_next(original_next) # connects the new node with the following part of the list
-                current.set_next(insert_node) # connects the beginning of the list with the new node
+                current.set_next(new_node) # connects the beginning of the list with the new node
                 inserted = True
             else:
                 current = current.get_next()
