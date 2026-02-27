@@ -165,19 +165,22 @@ class LinkedList:
 
     def insert(self, new_value: str, after_value: str) -> bool:
         inserted = False
-        insert_node = Node(new_value)
+        new_node = Node(new_value)
         current = self.__head # start iterating from beginning of list
 
-        while (current.has_next() and not inserted) or (current.get_value() == after_value): # second check for after_value being the last item
-            if current.get_value() == after_value:
-                original_next = current.get_next()
-                insert_node.set_next(original_next) # connects the new node with the following part of the list
-                current.set_next(new_node) # connects the beginning of the list with the new node
-                inserted = True
-            else:
-                current = current.get_next()
-
-        return inserted
+        if current is None:
+            inserted = False # change nothing if list is empty
+        elif (current.get_value() == after_value) and (current.get_next() is None): # in the case that after_value is the last item
+            current.set_next(new_node)
+        else:
+            while current.has_next() and inserted == False:
+                if current.get_value() == after_value:
+                    current_next = current.get_next()
+                    new_node.set_next(current_next)
+                    curret.set_next(new_node)
+                    inserted = True
+                else:
+                    current = current.get_next()
 
 # PART 2 ---------------------------------------------------------------------------------------------------
 
