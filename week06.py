@@ -3,8 +3,7 @@ from abc import ABC, abstractmethod  # Authorized import for derived classes
 
 # 345678901234567890123456789012345678901234567890123456789012345678901234567890
 
-
-# PART 1 ---------------------------------------------------------------------------------------------------
+# =================================== PART 1 ===================================
 class Node:
     """A simple linkable object. The node comprises two fields: a value field,
     here typed a string, and a pointer field to the next node. The default is
@@ -75,14 +74,19 @@ class LinkedList:
     the last node that points to None.
 
     Problem 1:
-        Instead of walking from head to end, the LinkedList class has a __tail attribute (initialized as None) that keeps track of the
-        last node in the list. When adding a node to the end, add() makes new_node the head (if the list is empty) or makes it the next
-        node for the current __tail, then updates __tail to equal the new node
+        Instead of walking from head to end, the LinkedList class has a __tail 
+        attribute (initialized as None) that keeps track of the last node in the 
+        list. When adding a node to the end, add() makes new_node the head (if 
+        the list is empty) or makes it the next node for the current __tail, 
+        then updates __tail to equal the new node
 
     Problem 2:
-        In the same way that LinkedList contains the __head attribute, it can also have a __count attribute representing the number of
-        nodes in the list. __count intializes as 0 because the the linked list initializes empty, and every time add() is called it
-        increments by 1. count() is modified to return the __count attribute instead of iterating through the entire list each time.
+        In the same way that LinkedList contains the __head attribute, it can 
+        also have a __count attribute representing the number of nodes in the 
+        list. __count intializes as 0 because the the linked list initializes 
+        empty, and every time add() is called it increments by 1. count() is
+        modified to return the __count attribute instead of iterating through 
+        the entire list each time.
 
     """
 
@@ -179,11 +183,13 @@ class LinkedList:
                 current = current.get_next()
         else:
             print("current was none")
+
+        # find match -> point old to new_node -> then before new_node
     
         return inserted
 
 
-# PART 2 ---------------------------------------------------------------------------------------------------
+# =================================== PART 2 ===================================
 
 class Performance(ABC):
     """
