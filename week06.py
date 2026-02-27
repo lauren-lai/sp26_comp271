@@ -168,24 +168,19 @@ class LinkedList:
         return self.__count
 
     def insert(self, new_value: str, after_value: str) -> bool:
+        print("\n------------------------------")
         print(f"IN INSERT, new_value = {new_value}, after_value = {after_value}")
         inserted = False
         new_node = Node(new_value)
         current = self.__head # start iterating from beginning of list
-        
-        if current is None:
-            print("current is None")
-        else: 
-            while (current is not None) and not inserted:
-                print(current)
-                if current.get_value() == after_value():
-                    print("current matches after")
-                else:
-                    current = current.get_next()
+
+        while (current is not None) and not inserted:
+            print(f"current is {current}")
+            current = current.get_next()
 
         # find match -> point old to new_node -> then before new_node
         print(f"inserted ends as {inserted}")
-        print("-----------------")
+        print("------------------------------")
         return inserted
 
 
