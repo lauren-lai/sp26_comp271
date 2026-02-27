@@ -75,7 +75,9 @@ class LinkedList:
     the last node that points to None.
 
     Problem 1:
-
+        Instead of walking from head to end, the LinkedList class has a __tail attribute (initialized as None) that keeps track of the
+        last node in the list. When adding a node to the end, add() makes new_node the head (if the list is empty) or makes it the next
+        node for the current __tail, then updates __tail to equal the new node
 
     Problem 2:
         In the same way that LinkedList contains the __head attribute, it can also have a __count attribute representing the number of
@@ -126,20 +128,26 @@ class LinkedList:
             # we are done.
             self.__head = new_node
         else:
-            # If the list is not empty, find its last Node and add the new
-            # Node object after it. To find the last Node, we start at the
-            # head node, and move to the next node, until we find the node
-            # whose next pointer is none.
-            current: Node = self.__head
-            # Look repeates as long as the current node has a next node
-            # for us to slide to.
-            while current.has_next():
-                # Move to the next node and try again
-                current = current.get_next()
-            # At the time the loop ends, current is at the last node of the
-            # linked list. Now we place the new node after the current node
-            # and we are done.
-            current.set_next(new_node)
+            # # If the list is not empty, find its last Node and add the new
+            # # Node object after it. To find the last Node, we start at the
+            # # head node, and move to the next node, until we find the node
+            # # whose next pointer is none.
+            # current: Node = self.__head
+            # # Look repeates as long as the current node has a next node
+            # # for us to slide to.
+            # while current.has_next():
+            #     # Move to the next node and try again
+            #     current = current.get_next()
+            # # At the time the loop ends, current is at the last node of the
+            # # linked list. Now we place the new node after the current node
+            # # and we are done.
+            # current.set_next(new_node)
+            if self.__tail is None:
+                self.__tail = new_node
+            else:
+                current_tail = self.__tail
+                current_tail.set_next(new_node)
+                self.__tail = new_node
         self.__count += 1
 
     def count(self) -> int:
