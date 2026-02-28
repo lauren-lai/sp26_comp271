@@ -3,7 +3,8 @@ from abc import ABC, abstractmethod  # Authorized import for derived classes
 
 # 345678901234567890123456789012345678901234567890123456789012345678901234567890
 
-# =================================== PART 1 ===================================
+# =================================== PART A ===================================
+
 class Node:
     """A simple linkable object. The node comprises two fields: a value field,
     here typed a string, and a pointer field to the next node. The default is
@@ -60,7 +61,6 @@ class Node:
         return self.__value
 
 
-
 class LinkedList:
     """A simple linked list of Node objects. Nodes in this list are
     connected one after the other, as shown below
@@ -72,29 +72,11 @@ class LinkedList:
 
     Every node, in the linked list, is connected to another node. Except for
     the last node that points to None.
-
-    Problem 1:
-        Instead of walking from head to end, the LinkedList class has a __tail 
-        attribute (initialized as None) that keeps track of the last node in the 
-        list. When adding a node to the end, add() makes new_node the head (if 
-        the list is empty) or makes it the next node for the current __tail, 
-        then updates __tail to equal the new node
-
-    Problem 2:
-        In the same way that LinkedList contains the __head attribute, it can 
-        also have a __count attribute representing the number of nodes in the 
-        list. __count intializes as 0 because the the linked list initializes 
-        empty, and every time add() is called it increments by 1. count() is
-        modified to return the __count attribute instead of iterating through 
-        the entire list each time.
-
     """
 
     def __init__(self) -> None:
         """Instantiate an empty linked list"""
         self.__head: Node | None = None
-        self.__tail = None
-        self.__count = 0
 
     # Constants for string representation of the linked list
     __EMPTY_LIST_STR: str = "Empty List"
@@ -132,59 +114,57 @@ class LinkedList:
             # we are done.
             self.__head = new_node
         else:
-            # # If the list is not empty, find its last Node and add the new
-            # # Node object after it. To find the last Node, we start at the
-            # # head node, and move to the next node, until we find the node
-            # # whose next pointer is none.
-            # current: Node = self.__head
-            # # Look repeates as long as the current node has a next node
-            # # for us to slide to.
-            # while current.has_next():
-            #     # Move to the next node and try again
-            #     current = current.get_next()
-            # # At the time the loop ends, current is at the last node of the
-            # # linked list. Now we place the new node after the current node
-            # # and we are done.
-            # current.set_next(new_node)
-            if self.__tail is None:
-                self.__tail = new_node
-            else:
-                current_tail = self.__tail
-                current_tail.set_next(new_node)
-                self.__tail = new_node
-        self.__count += 1
+            # If the list is not empty, find its last Node and add the new
+            # Node object after it. To find the last Node, we start at the
+            # head node, and move to the next node, until we find the node
+            # whose next pointer is none.
+            current: Node = self.__head
+            # Look repeates as long as the current node has a next node
+            # for us to slide to.
+            while current.has_next():
+                # Move to the next node and try again
+                current = current.get_next()
+            # At the time the loop ends, current is at the last node of the
+            # linked list. Now we place the new node after the current node
+            # and we are done.
+            current.set_next(new_node)
 
     def count(self) -> int:
         """Counts the number of nodes in the object and returns it"""
-        # # Initialize the return item
-        # counter: int = 0
-        # # Start at the beginning of the linked list
-        # current: Node = self.__head
-        # # Go through every node, increasing the counter, until we
-        # # reach the last node and it takes out outside the linked list
-        # while current is not None:
-        #     counter += 1
-        #     current = current.get_next()
-        return self.__count
+        # Initialize the return item
+        counter: int = 0
+        # Start at the beginning of the linked list
+        current: Node = self.__head
+        # Go through every node, increasing the counter, until we
+        # reach the last node and it takes out outside the linked list
+        while current is not None:
+            counter += 1
+            current = current.get_next()
+        return counter
 
     def insert(self, new_value: str, after_value: str) -> bool:
-        print("\n------------------------------")
-        print(f"IN INSERT, new_value = {new_value}, after_value = {after_value}")
+        print("\n--------------------------------------------------------------------")
         inserted = False
+        current = self.__head
         new_node = Node(new_value)
-        current = self.__head # start iterating from beginning of list
+        print(f"inserted is {inserted}, current is {current}, new_node is {new_node}")
 
-        while (current is not None) and not inserted:
-            print(f"current is {current}")
-            current = current.get_next()
+        while (current is not None) and (inserted == False):
+            print("\tin the while loop")
+            print(f"\t{current}")
+            if current.get_value() == after_value:
+                print("\tcurrent matches after")
+                inserted = True
+            else:
+                print("\titerating")
+                current = current.get_next()
 
-        # find match -> point old to new_node -> then before new_node
-        print(f"inserted ends as {inserted}")
-        print("------------------------------")
+        
+        print("--------------------------------------------------------------------")
         return inserted
 
 
-# =================================== PART 2 ===================================
+# =================================== PART B ===================================
 
 class Performance(ABC):
     """
