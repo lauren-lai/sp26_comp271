@@ -77,6 +77,8 @@ class LinkedList:
     def __init__(self) -> None:
         """Instantiate an empty linked list"""
         self.__head: Node | None = None
+        self.__tail = None
+        self.__count = 0
 
     # Constants for string representation of the linked list
     __EMPTY_LIST_STR: str = "Empty List"
@@ -127,7 +129,8 @@ class LinkedList:
             # At the time the loop ends, current is at the last node of the
             # linked list. Now we place the new node after the current node
             # and we are done.
-            current.set_next(new_node)
+            self.__tail = new_node
+            current.set_next(self.__tail)
 
     def count(self) -> int:
         """Counts the number of nodes in the object and returns it"""
@@ -147,19 +150,33 @@ class LinkedList:
         inserted = False
         current = self.__head
         new_node = Node(new_value)
-        print(f"inserted is {inserted}, current is {current}, new_node is {new_node}")
+        print(f"inserted is {inserted}, current is {current}, after_value is {after_value}, new_node is {new_node}")
 
         while (current is not None) and (inserted == False):
             print("\tin the while loop")
-            print(f"\t{current}")
+            print(f"\t\t{current}")
             if current.get_value() == after_value:
-                print("\tcurrent matches after")
+                print("\t\tcurrent matches after")
+                
+                # tail condition
+                if (current.get_value() == after_value) and (after_value == self.__tail.get_value()) and (current.get_next() is None):
+                    print("\t\tin tail condition")
+                    self.__tail.set_next(new_node)
+                    self.__tail = new_node
+                else:
+                    prev_next = current.get_next()
+                    # print(f"\t\tprev_next is {prev_next}")
+                    new_node.set_next(prev_next)
+                    # print(f"\t\tnew_node next is {new_node.get_next()}")
+                    current.set_next(new_node)
+                    # print(f"\t\tcurrnet next is {current.get_next()}")
+
                 inserted = True
             else:
-                print("\titerating")
+                print("\t\titerating")
                 current = current.get_next()
 
-        
+        print(f"inserted is {inserted}")
         print("--------------------------------------------------------------------")
         return inserted
 
