@@ -118,9 +118,10 @@ class LinkedList:
         return string
 
     def add(self, value: str) -> None:
-        """Adds a new node to the linked list. First we create a new node
-        with the given value. And next we find the end of the linked list
-        and we append the new node to it."""
+        """
+        adds a new node to the linked list. first creates the new node with
+        the given value, then adds it to the tail of the list.
+        """
         new_node: Node = Node(value)
         # for a list of length 1, head and tail are the same item
         if self.__head is None:
@@ -144,7 +145,8 @@ class LinkedList:
 
         while (current is not None) and (inserted == False):
             if current.get_value() == after_value:
-                if (after_value == self.__tail.get_value()) and (current.get_next() is None):
+                if ((after_value == self.__tail.get_value()) 
+                and (current.get_next() is None)):
                     self.__tail.set_next(new_node)
                     self.__tail = new_node
                 else:
@@ -283,7 +285,8 @@ class Concert(Performance):
     """
 
     def __init__(
-        self, title: str, duration_minutes: int, base_ticket_price: float, artist_name: str, genre: str, has_vip: bool
+        self, title: str, duration_minutes: int, base_ticket_price: float, 
+        artist_name: str, genre: str, has_vip: bool
     ) -> None:
 
         super().__init__(title, duration_minutes, base_ticket_price)
@@ -324,15 +327,15 @@ class Concert(Performance):
         return self._audience_count
 
     def get_artist_name(self) -> str:
-        """ returns the artist's name """
+        """returns the artist's name"""
         return self.__artist_name
 
     def get_genre(self) -> str:
-        """ returns the genre """
+        """returns the genre"""
         return self.__genre
     
     def has_vip(self) -> bool:
-        """ returns True if there is a vip, False otherwise """
+        """returns True if there is a vip, False otherwise"""
         return self.__has_vip
 
     def get_base_ticket_price(self) -> float:
@@ -346,24 +349,27 @@ class Concert(Performance):
 
     def get_adjusted_ticket_price(self) -> float:
         """
-        increases the ticket price by 40% if the concert has a vip, otherwise returns the base ticket price
+        returns an increased ticket price if the concert has a vip, otherwise 
+        returns the base ticket price.
         """
-        return (self.get_base_ticket_price() * 0.4) + self.get_base_ticket_price() if self.has_vip() else self.get_base_ticket_price()
+        adjusted_ticket_price = self.get_base_ticket_price()
+        if self.has_vip():
+            adjusted_ticket_price = ((self.get_base_ticket_price() * 0.4)
+                                    + self.get_base_ticket_price())
+        return adjusted_ticket_price
 
     def calculate_revenue(self) -> float:
-        """
-        returns the expected revenue, audience count x adjusted ticket price
-        """
+        """returns the calculated revenue, attendance x adjusted price."""
         return self.get_audience_count() * self.get_adjusted_ticket_price()
     
-    _DESCRIBE_HEADER = "This concert features {}, an artist in {} genre. The concert is {} minutes long."
+    _DESCRIBE_HEADER = "This concert features {}, an artist in {} genre."
     def describe(self) -> str:
         """
-        Returns a string description of the concert, including the artist's name, genre, and the concert duration.
+        returns a string description of the concert, including the artist's 
+        name and genre.
         """
-        return self._DESCRIBE_HEADER.format(self.get_artist_name(), self.get_genre(), self.get_duration())
-
-
+        return self._DESCRIBE_HEADER.format(self.get_artist_name(), 
+                                            self.get_genre())
 
 class Lecture(Performance):
     """
@@ -371,7 +377,8 @@ class Lecture(Performance):
     """
 
     def __init__(
-        self, title: str, duration_minutes: int, base_ticket_price: float, speaker_name: str, is_university_event: bool
+        self, title: str, duration_minutes: int, base_ticket_price: float, 
+        speaker_name: str, is_university_event: bool
     ) -> None:
 
         super().__init__(title, duration_minutes, base_ticket_price)
@@ -408,7 +415,7 @@ class Lecture(Performance):
         return self._duration_minutes
 
     def get_speaker(self) -> str:
-        """ returns the speaker's name """
+        """returns the speaker's name."""
         return self.__speaker_name
 
     def get_audience_count(self) -> int:
@@ -416,6 +423,7 @@ class Lecture(Performance):
         return self._audience_count
 
     def is_university_event(self) -> bool:
+        """returns if this is a university event."""
         return self.__is_university_event
 
     def get_base_ticket_price(self) -> float:
@@ -428,11 +436,17 @@ class Lecture(Performance):
         return self._base_ticket_price
 
     def get_adjusted_ticket_price(self) -> float:
-        """ discounts the ticket price by 50% if this is a university event, returns the base price otherwise """
-        return self.get_base_ticket_price() * 0.5 if self.is_university_event() else self.get_base_ticket_price()
+        """
+        returns a discounted the ticket price if this is a university event, 
+        returns the base price otherwise.
+        """
+        adjusted_ticket_price = self.get_base_ticket_price()
+        if self.is_university_event():
+            adjusted_ticket_price = adjusted_ticket_price * 0.5
+        return adjusted_ticket_price
 
     def calculate_revenue(self) -> float:
-        """ returns the calculated revenue, audience x adjusted price """
+        """returns the calculated revenue, attendance x adjusted price."""
         return self.get_audience_count() * self.get_adjusted_ticket_price()
 
     _DESCRIBE_HEADER = "This event features {}, and {} a university event."
