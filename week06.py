@@ -131,19 +131,21 @@ class LinkedList:
             # and we are done.
             self.__tail = new_node
             current.set_next(self.__tail)
+            self.__count += 1
 
     def count(self) -> int:
         """Counts the number of nodes in the object and returns it"""
-        # Initialize the return item
-        counter: int = 0
-        # Start at the beginning of the linked list
-        current: Node = self.__head
-        # Go through every node, increasing the counter, until we
-        # reach the last node and it takes out outside the linked list
-        while current is not None:
-            counter += 1
-            current = current.get_next()
-        return counter
+        # # Initialize the return item
+        # counter: int = 0
+        # # Start at the beginning of the linked list
+        # current: Node = self.__head
+        # # Go through every node, increasing the counter, until we
+        # # reach the last node and it takes out outside the linked list
+        # while current is not None:
+        #     counter += 1
+        #     current = current.get_next()
+        # return counter
+        return self.__count
 
     def insert(self, new_value: str, after_value: str) -> bool:
         print("\n--------------------------------------------------------------------")
@@ -159,10 +161,12 @@ class LinkedList:
                 print("\t\tcurrent matches after")
                 
                 # tail condition
-                if (current.get_value() == after_value) and (after_value == self.__tail.get_value()) and (current.get_next() is None):
+                if (after_value == self.__tail.get_value()) and (current.get_next() is None):
                     print("\t\tin tail condition")
                     self.__tail.set_next(new_node)
                     self.__tail = new_node
+                    # print(f"\t\ttail is {self.__tail}")
+                    # print(f"\t\ttail next is {self.__tail.get_next()}")
                 else:
                     prev_next = current.get_next()
                     # print(f"\t\tprev_next is {prev_next}")
@@ -171,6 +175,7 @@ class LinkedList:
                     current.set_next(new_node)
                     # print(f"\t\tcurrnet next is {current.get_next()}")
 
+                self.__count += 1
                 inserted = True
             else:
                 print("\t\titerating")
