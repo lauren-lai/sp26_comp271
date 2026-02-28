@@ -124,28 +124,25 @@ class LinkedList:
         with the given value. And next we find the end of the linked list
         and we append the new node to it."""
         new_node: Node = Node(value)
-        if self.__head is None:
-            self.__head = new_node
-            self.__count += 1
-        else:
-            current: Node = self.__head
-            while current.has_next():
-                current = current.get_next()
-            current.set_next(new_node)
-            self.__tail = new_node
-            self.__count += 1
-
-        # if self.__head is None: # empty list
+        # if self.__head is None: # THIS MOSTLY WORKS -- AssertionError: False is not true : Problem 1 probably incomplete
         #     self.__head = new_node
         #     self.__count += 1
-        # elif (self.__tail is None) and (self.__head is not None):
-        #     self.__tail = new_node
-        #     self.__count += 1
         # else:
-        #     current_tail = self.__tail
-        #     current_tail.set_next(new_node)
+        #     current: Node = self.__head
+        #     while current.has_next():
+        #         current = current.get_next()
+        #     current.set_next(new_node)
         #     self.__tail = new_node
         #     self.__count += 1
+
+        if self.__head is None: # for a list of length 1, head and tail are the same item
+            self.__head = new_node
+            self.__tail = new_node
+            self.__count += 1
+        else:
+            self.__tail.set_next(new_node)
+            self.__tail = new_node
+            self.__count += 1
 
     def count(self) -> int:
         """Counts the number of nodes in the object and returns it"""
