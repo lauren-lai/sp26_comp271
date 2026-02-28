@@ -76,17 +76,15 @@ class LinkedList:
     Problem 1:
         Instead of walking from head to end, the LinkedList class has a __tail 
         attribute (initialized as None) that keeps track of the last node in the 
-        list. When adding a node to the end, add() makes new_node the head (if 
-        the list is empty) or makes it the next node for the current __tail, 
-        then updates __tail to equal the new node
+        list. When adding a node to the end, add() makes new_node the head and 
+        tail (if the list is empty), or sets new_node as the node after __tail,
+        and then updates __tail to equal new_node.
 
     Problem 2:
-        In the same way that LinkedList contains the __head attribute, it can 
-        also have a __count attribute representing the number of nodes in the 
-        list. __count intializes as 0 because the the linked list initializes 
-        empty, and every time add() is called it increments by 1. count() is
-        modified to return the __count attribute instead of iterating through 
-        the entire list each time.
+        In the same way LinkedList contains the __head attribute, adding a 
+        __count attribute removes the need for count() to walk from head to end
+        every time. __count is incremented by 1 everytime add() is called, and 
+        initalizes at 0 because the linked list is initialized empty.
     """
 
     def __init__(self) -> None:
@@ -124,77 +122,40 @@ class LinkedList:
         with the given value. And next we find the end of the linked list
         and we append the new node to it."""
         new_node: Node = Node(value)
-        # if self.__head is None: # THIS MOSTLY WORKS -- AssertionError: False is not true : Problem 1 probably incomplete
-        #     self.__head = new_node
-        #     self.__count += 1
-        # else:
-        #     current: Node = self.__head
-        #     while current.has_next():
-        #         current = current.get_next()
-        #     current.set_next(new_node)
-        #     self.__tail = new_node
-        #     self.__count += 1
-
-        if self.__head is None: # for a list of length 1, head and tail are the same item
+        # for a list of length 1, head and tail are the same item
+        if self.__head is None:
             self.__head = new_node
             self.__tail = new_node
             self.__count += 1
+        # otherwise, set the node after the tail to new_node and update tail
         else:
             self.__tail.set_next(new_node)
             self.__tail = new_node
             self.__count += 1
 
     def count(self) -> int:
-        """Counts the number of nodes in the object and returns it"""
-        # # Initialize the return item
-        # counter: int = 0
-        # # Start at the beginning of the linked list
-        # current: Node = self.__head
-        # # Go through every node, increasing the counter, until we
-        # # reach the last node and it takes out outside the linked list
-        # while current is not None:
-        #     counter += 1
-        #     current = current.get_next()
-        # return counter
+        """returns the __count attribute"""
         return self.__count
 
     def insert(self, new_value: str, after_value: str) -> bool:
-        print("\n--------------------------------------------------------------------")
         inserted = False
         current = self.__head
         new_node = Node(new_value)
-        print(f"inserted is {inserted}, current is {current}, after_value is {after_value}, new_node is {new_node}")
 
         while (current is not None) and (inserted == False):
-            print("\tin the while loop")
-            print(f"\t\t{current}")
             if current.get_value() == after_value:
-                print("\t\tcurrent matches after")
-                
-                # tail condition
                 if (after_value == self.__tail.get_value()) and (current.get_next() is None):
-                    print("\t\tin tail condition")
                     self.__tail.set_next(new_node)
                     self.__tail = new_node
-                    print(f"\t\ttail is {self.__tail}")
-                    print(f"\t\ttail next is {self.__tail.get_next()}")
                 else:
-                    print("\t\tin the else")
                     prev_next = current.get_next()
-                    print(f"\t\tprev_next is {prev_next}")
                     new_node.set_next(prev_next)
-                    print(f"\t\tnew_node next is {new_node.get_next()}")
                     current.set_next(new_node)
-                    print(f"\t\tcurrnet next is {current.get_next()}")
 
                 self.__count += 1
                 inserted = True
             else:
-                print("\t\titerating")
                 current = current.get_next()
-
-        print(f"inserted is {inserted}")
-        print("--------------------------------------------------------------------")
         return inserted
 
 
