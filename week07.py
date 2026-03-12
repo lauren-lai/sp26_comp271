@@ -21,46 +21,136 @@ from backpack import Backpack
 class Test_Backpack(unittest.TestCase):
     # Remove the pass statement below and write your test methods
     # in this class
-    def test_starts_empty(self):
-        pass
+
+    def test_initializes_empty(self):
+        test_object:Backpack = Backpack("Lauren", 3)
+        self.assertEqual("Backpack(owner=Lauren, items=empty)", test_object.str())
 
     def test_default_capacity(self):
-        pass
+        test_object:Backpack = Backpack("Lauren")
+        test_object.add("Pencil")
+        self.assertEqual("Backpack(owner=Lauren, items=1/5)", test_object.str())
 
     def test_count_increments(self):
-        pass
+        test_object:Backpack = Backpack("Lauren", 3)
+        prev_count = test_object.count()
+
+        result = test_object.add("Pencil")
+        new_count = test_object.count()
+
+        self.assertTrue(result)
+        self.assertGreater(new_count, prev_count)        
 
     def test_stores_in_order(self):
-        pass
+        test_object:Backpack = Backpack("Lauren", 3)
+        test_object.add("Pencil")
+        test_object.add("Pen")
+        items = test_object.items()
+
+        self.assertEqual("[Pencil, Pen]", items)
 
     def test_adding_when_full(self):
-        pass
+        test_object:Backpack = Backpack("Lauren", 2)
+        test_object.add("Pencil")
+        test_object.add("Pen")
+        prev_items = test_object.items()
+        prev_count = test_object.count()
 
-    def test_remove_works(self):
-        pass
+        test_object.add("Water")
+        new_items = test_object.items()
+        new_count = test_object.count()
+        is_full = test_object.is_full()
+
+        self.assertEqual(prev_count, new_count)
+        self.assertTrue(is_full)
+        self.assertTrue(prev_items, new_items)
+
+    def test_remove(self):
+        test_object:Backpack = Backpack("Lauren", 2)
+        test_object.add("Pencil")
+        test_object.add("Pen")
+        prev_items = test_object.items()
+
+        result = test_object.remove("Pencil")
+        new_items = test_object.items()
+
+        self.assertTrue(result)
+        self.assertNotEqual(prev_items, new_items)  
+        
 
     def test_remove_decrements_count(self):
-        pass
+        test_object:Backpack = Backpack("Lauren", 2)
+        test_object.add("Pencil")
+        test_object.add("Pen")
+        prev_count = test_object.count()
+
+        result = test_object.remove("Pencil")
+        new_count = test_object.count
+
+        self.assertTrue(result)
+        self.assertGreater(prev_count, new_count)    
 
     def test_remove_missing_item(self):
-        pass
+        test_object:Backpack = Backpack("Lauren", 2)
+        test_object.add("Pencil")
+        test_object.add("Pen")
+        prev_count = test_object.count()
+
+        result = test_object.remove("Water Bottle")
+        new_count = test_object.count
+
+        self.assertFalse(result)
+        self.assertEqual(prev_count, new_count)
 
     def test_allows_duplicate_items(self):
-        pass
+        test_object:Backpack = Backpack("Lauren", 3)
+        test_object.add("Pencil")
+        result = test_object.add("Pencil")
+
+        self.assertTrue(result)
 
     def test_remove_one_duplicate_item(self):
-        pass
+        test_object:Backpack = Backpack("Lauren", 3)
+        test_object.add("Pencil")
+        test_object.add("Pencil")
+
+        result = test_object.remove("Pencil")
+        new_items = test_object.items()
+
+        self.assertTrue(result)
+        self.assertEqual("[Pencil]", new_items)
 
     def test_is_full_changes(self):
-        pass
+        test_object:Backpack = Backpack("Lauren", 1)
+        prev_is_full = test_object.is_full()
+
+        test_object.add("Pencil")
+        new_is_full = test_object.is_full()
+
+        self.assertFalse(prev_is_full)
+        self.assertTrue(new_is_full)
 
     def test_items_returns_copy(self):
-        pass
+        test_object:Backpack = Backpack("Lauren", 2)
+        test_object.add("Pencil")
+        test_object.add("Pen")
 
-    def test_str_is_correct(self):
-        pass
+        items = test_object.items()
+        items.pop(0)
 
+        test.assertNotEqual(test_object.items(), items)
 
+    def test_str_is_correct_empty(self):
+        test_object:Backpack = Backpack("Lauren", 5)
+        test.assertEqual("Backpack(owner=Lauren, items=empty", str(test_object))
+
+    def test_str_is_correct_full(self):
+        test_object:Backpack = Backpck("Lauren", 3)
+        test_object.add("Pencil")
+        test_object.add("Pen")
+        test_object.add("Water")
+
+        test.assertEqual("Backpack(owner=Lauren, items=3/3)", str(test_object))
 
 
 # ----- Run the tests
