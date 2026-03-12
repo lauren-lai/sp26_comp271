@@ -5,19 +5,6 @@ import unittest
 # The following line requires the presence of file backpack.py in the same
 # folder as this week07.py file.
 from backpack import Backpack
-
-# A new backpack starts empty.
-# The default capacity is 5 when not specified.
-# Adding items increases count() appropriately.
-# Items are stored in insertion order.
-# Adding when full returns False and does not change contents.
-# Removing an existing item works and reduces count.
-# Removing a missing item returns False and does not change contents.
-# Duplicate items are allowed and removed one at a time.
-# is_full() transitions correctly at the capacity boundary.
-# items() returns a copy (mutating the returned list does not affect the backpack).
-# __str__ output matches the specification exactly (both empty and non-empty cases).
-
 class Test_Backpack(unittest.TestCase):
     # Remove the pass statement below and write your test methods
     # in this class
