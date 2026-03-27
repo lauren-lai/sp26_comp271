@@ -1,57 +1,53 @@
 class NameBins:
     def __init__(self, n: int) -> None:
-        self.__bin_list = list[[None] * n]
-        self.__num_bins = n
-        self.__alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
-        'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+        self.__n = n
+        self.__bins: list[list[str]] = [[] for _ in range(n)]
+
+        self.LETTERS_PER_BIN = 26 // n # convention of last bin being biggest because // is floor division
+        self.__ranges = []
+        for i in range(n):
+            start_char = chr(ord('A') + (i * self.LETTERS_PER_BIN)) # converting to ascii
+            if i < n-1:
+                end_char = chr(ord('A') + (i + 1) * self.LETTERS_PER_BIN - 1)
+            else:
+                end_char = 'Z'
+            self.__ranges.append([start_char, end_char])
 
     def add_name(self, name: str) -> None:
         """ adds the name to the appropriate bin """
-        first_letter = name[0]
-        index = self.get_letter_index(first_letter)
-        print(self.get_bin_range())
+        letter_index = ord(name[0]) - ord("A") # convert to ascii
+        bin_index = min(letter_index // self.LETTERS_PER_BIN, self.__n - 1)
+        self.__bins[bin_index].append(name)
 
     def size(self) -> int:
         """ returns the total number of names in all bins """
         size = 0
-
-        for list in self.__bin_list():
-            size += list.length()
+        for i in range(len(self.__bins)):
+            size += len(self.__bins[i])
         return size
 
+    __HEADER = "this is bin #{}, with {} names:"
     def __str__(self) -> str:
         """ returns a formatted string representing the bins """
-        return "hello world"
+        output = ""
+        for i in range(len(self.__bins)):
+            output += f"\n{self.__HEADER.format(i, len(self.__bins[i]))}"
+            for j in range(len(self.__bins[i])):
+                output += f"\n\t{self.__bins[i][j]}"
+        return output
 
-    def get_letter_index(self, letter:str) -> int: 
-        index = 0
-        found = False
-        i = 0
-        while not found and i in range(len(self.__alphabet)):
-            if letter == self.__alphabet[i]: # allowed because this isn't in add_name
-                index = i
-            i += 1
-        return index
-
-    def get_bin_range(self) -> int:
-        bin_range = 0
-        if (26 % self.__num_bins) == 0:
-            bin_range = 26 // self.__num_bins
-        else:
-            
-
-        return bin_range
 
 def main() -> None:
     bins = NameBins(3)
-    print(bins.__str__())
 
     bins.add_name("Adam")
     bins.add_name("Lauren")
     bins.add_name("Sadie")
+    bins.add_name("Michael")
+    bins.add_name("Bobby")
 
     print(bins.__str__())
-    bins.size()
+    print(bins.size())
 
 
 if __name__ == "__main__":
