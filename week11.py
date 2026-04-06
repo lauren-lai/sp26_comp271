@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-
+import random
+import string
 class ProbingHashTable:
     """Hash table demonstrating linear vs. quadratic probing."""
 
@@ -122,43 +123,46 @@ class ProbingHashTable:
             lines.append(content)
         return "\n".join(lines)
 
+class TestHashTable:
 
-# ── Demo ──────────────────────────────────────────────────────
+    def __init__(self, hash_table: ProbingHashTable):
+        self._hash_table = hash_table
+        self._table_modes = hash_table._PROBE_MODES
+        self._table_capacity = hash_table._DEFAULT_CAPACITY
+    
+    def random_string(self, n: int) -> str:
+        """Generate a random string of length n using alphabetical characters."""
+        return "".join(random.choices(string.ascii_letters, k=n))
 
-import random
-import string
-
-capacity: int = 11
-
-modes: tuple[str, str] = ("linear", "quadratic")
-
-def random_string(n: int) -> str:
-    """Generate a random string of length n using alphabetical characters."""
-    return "".join(random.choices(string.ascii_letters, k=n))
-
-
-def demo(trials: int):
-    """Demonstrate linear and quadratic probing with random string insertions."""
-    # --- Magic values ok in testing/demo code ---
-    for mode in modes:
-        ht = ProbingHashTable(capacity=capacity, mode=mode)
+    def test(self, trials: int, mode: str):
+        """Demonstrate linear and quadratic probing with random string insertions."""
         print(f"\n{'=' * 40}")
-        print(f"  {mode.upper()} PROBING ({capacity=})")
+        print(f"  {mode.upper()} PROBING ({self._table_capacity})")
         print(f"{'=' * 40}")
-
+        
         for _ in range(trials):
-            value: str = random_string(5)
-            probes: list[int] = ht.insert(value)
+            value: str = self.random_string(5)
+            probes: list[int] = self._hash_table.insert(value)
             status: str = "collision!" if len(probes) > 1 else "direct"
             print(
                 f"  insert({value}): hash={abs(hash(value)) % capacity:<3} probes={probes}  [{status}]"
             )
 
-        print(f"\n{ht.display()}")
+        print(f"\n{self._hash_table.display()}")
         print(
-            f"\nLoad factor: {ht._size}/{ht._capacity} = {ht._size / ht._capacity:.2f}"
+            f"\nLoad factor: {self._hash_table._size}/{self._hash_table._capacity} = {self._hash_table._size / self._hash_table._capacity:.2f}"
         )
 
 
 if __name__ == "__main__":
-    demo(10)
+        
+    capacity = 11
+    modes: tuple[str, str] = ("linear", "quadratic")
+    trials = 10
+    
+    test_one = TestHashTable(ProbingHashTable(capacity, modes[0]))
+    test_two = TestHashTable(ProbingHashTable(capacity, modes[1]))
+
+    print("*" * 80)
+    test_one.test(trials, modes[0])
+    test_two.test(trials, modes[1])
