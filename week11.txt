@@ -1,0 +1,20 @@
+COMP 271 -- Week 11 -- Lauren Lai
+
+How does average probes per insertion change as load factor increases?
+    linear seems to grow almost exponentially as load factor increases, while quadratic seems to 
+    increase linearly.
+
+How do linear and quadratic probing compare at low load factors?
+    at low load factors, both linear and quadratic probing are pretty even; no failures are present
+    for either in my data, and they have similar probing averages (albeit linear is slightly higher).
+
+How do they compare at high load factors?
+    while linear has a higher average for probing than quadratic at higher numbers, quadratic seems to
+    require several attempts (generating a new string to hash) as the load factor increases, leading to
+    a much higher failure rate.
+
+Does quadratic probing begin to fail before the table is full?
+    yes, it does fail before the table is full
+
+If so, around what region of the load factor does this become noticeable?
+    first fails at a load factor of 0.79, and increases to 0.89 at a load factor of 1.0

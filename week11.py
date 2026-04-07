@@ -1,5 +1,4 @@
 from __future__ import annotations
-
 import random
 import string
 class ProbingHashTable:
@@ -124,7 +123,6 @@ class ProbingHashTable:
         return "\n".join(lines)
 
 class TestHashTable:
-
     def random_string(self, n: int) -> str:
         """Generate a random string of length n using alphabetical characters."""
         return "".join(random.choices(string.ascii_letters, k=n))
@@ -145,57 +143,57 @@ class TestHashTable:
             probe_lf_table.append(trial)
         return probe_lf_table
 
-    def avg_by_lf(self, load_factor, results:[]) -> float:
-        """ return the average number of probes for a given load factor """
-        average: float = 0.0
-        counter: int = 0
+    def avg_by_lf(self, load_factor, results:[]) -> []:
+        """ 
+        return the average number of probes and failures for a given load factor 
+        """
+        probe_avg: float = 0.0
+        probe_count: int = 0
+        attempt_avg: float = 0.0
+        attempt_count: int = 0
 
-        for i in range(len(results)):
-            for j in range(len(results[i])):
+        for i in range(len(results)): # for each trial
+            for j in range(len(results[i])): # for each string
                 if results[i][j][0] == load_factor:
-                    average += results[i][j][1]
-                    counter += 1
-        return round(average/counter, 2)
+                    probe_avg += results[i][j][1]
+                    probe_count += 1
+                    attempt_avg += results[i][j][2]
+                    attempt_count += 1
 
+        probe_avg = round(probe_avg/probe_count, 2)
+        if attempt_avg != 0:
+            attempt_avg = round(attempt_avg/attempt_count, 2)
+        return [probe_avg, attempt_avg]
 
-if __name__ == "__main__":
-        
-    capacity = 11
+if __name__ == "__main__": 
     modes: tuple[str, str] = ("linear", "quadratic")
-    trials = 250 # number of tests
-    reps = 11 # number of strings generated per test
+    capacity = 19 # table capacity
+    trials = 500 # number of trials
+    reps = 19 # number of strings generated per trial
 
     test_table = TestHashTable()
-    linear_results = []
+    linear_results = [] 
     quadratic_results = []
     avgs_by_lf = []
 
-    print("*" * 80)
+    # for both modes, attempt to fill a new table 500 times in both modes
     for mode in modes:
         for i in range(trials):
             ht = ProbingHashTable(capacity, mode)
             results = test_table.test(reps, mode, ht)
             linear_results.append(results) if mode == modes[0] else quadratic_results.append(results)
-    
-    # print("LINEAR RESULTS")
-    # for i in range(len(linear_results)):
-    #     for j in range(len(linear_results[i])):
-    #         print(f"\t{linear_results[i][j]}")
-    # print("QUADRATIC RESULTS")
-    # for i in range(len(quadratic_results)):
-    #     for j in range(len(linear_results[i])):
-    #         print(f"\t{quadratic_results[i][j]}"
 
     for i in range(1, capacity + 1):
         avgs_by_lf.append([round(i/capacity, 2)])
-    print(avgs_by_lf)
 
+    # for each possible load factor, average the probes and failures of the above test
     for i in range(len(avgs_by_lf)):
         lin_avg = test_table.avg_by_lf(avgs_by_lf[i][0], linear_results)
         quad_avg = test_table.avg_by_lf(avgs_by_lf[i][0], quadratic_results)
         avgs_by_lf[i].append(lin_avg)
         avgs_by_lf[i].append(quad_avg)
 
+    print("[load factor, [lin avg probes, lin avg fails], [quad avg probes, quad avg fails]]")
     for i in range(len(avgs_by_lf)):
         print(avgs_by_lf[i])
 
