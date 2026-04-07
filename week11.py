@@ -134,35 +134,50 @@ class TestHashTable:
         """Generate a random string of length n using alphabetical characters."""
         return "".join(random.choices(string.ascii_letters, k=n))
 
-    def test(self, trials: int, mode: str):
+    def test(self, trials: int, mode: str) -> [[]]:
         """Demonstrate linear and quadratic probing with random string insertions."""
-        print(f"\n{'=' * 40}")
-        print(f"  {mode.upper()} PROBING ({self._table_capacity})")
-        print(f"{'=' * 40}")
+        # print(f"\n{'=' * 40}")
+        # print(f"  {mode.upper()} PROBING ({self._table_capacity})")
+        # print(f"{'=' * 40}")
+
+        probe_lf_table = [[]]
         
         for _ in range(trials):
             value: str = self.random_string(5)
             probes: list[int] = self._hash_table.insert(value)
             status: str = "collision!" if len(probes) > 1 else "direct"
-            print(
-                f"  insert({value}): hash={abs(hash(value)) % capacity:<3} probes={probes}  [{status}]"
-            )
+            # print(
+            #     f"  insert({value}): hash={abs(hash(value)) % capacity:<3} probes={probes}  [{status}]"
+            # )
+            load_factor = round(self._hash_table._size / self._hash_table._capacity, 2) # couldn't get the :.2f to work here
+            probe_lf_table.append([len(probes), load_factor])
 
-        print(f"\n{self._hash_table.display()}")
-        print(
-            f"\nLoad factor: {self._hash_table._size}/{self._hash_table._capacity} = {self._hash_table._size / self._hash_table._capacity:.2f}"
-        )
+        # print(f"\n{self._hash_table.display()}")
+        # print(
+        #     f"\nLoad factor: {self._hash_table._size}/{self._hash_table._capacity} = {self._hash_table._size / self._hash_table._capacity:.2f}"
+        # )
+
+        return probe_lf_table
 
 
 if __name__ == "__main__":
         
     capacity = 11
     modes: tuple[str, str] = ("linear", "quadratic")
-    trials = 10
-    
-    test_one = TestHashTable(ProbingHashTable(capacity, modes[0]))
-    test_two = TestHashTable(ProbingHashTable(capacity, modes[1]))
+    trials = 10 # number of tests
+    reps = 11 # number of strings generated per test
 
-    print("*" * 80)
-    test_one.test(trials, modes[0])
-    test_two.test(trials, modes[1])
+    linear_results = [[]]
+    quadratic_results = [[]]
+
+    for mode in modes:
+        print("*" * 80)
+        for i in range(trials):
+            ht = TestHashTable(ProbingHashTable(capacity, mode))
+            results = ht.test(reps, mode)
+            linear_results.append(results) if mode == modes[0] else quadratic_results.append(results)
+
+    print(f"LINEAR TEST RESULTS: \n\t{linear_results}")
+    print(f"QUADRATIC TEST RESULTS: \n\t{quadratic_results}")
+
+    
