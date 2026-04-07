@@ -125,16 +125,11 @@ class ProbingHashTable:
 
 class TestHashTable:
 
-    def __init__(self, hash_table: ProbingHashTable):
-        self._hash_table = hash_table
-        self._table_modes = hash_table._PROBE_MODES
-        self._table_capacity = hash_table._DEFAULT_CAPACITY
-    
     def random_string(self, n: int) -> str:
         """Generate a random string of length n using alphabetical characters."""
         return "".join(random.choices(string.ascii_letters, k=n))
 
-    def test(self, trials: int, mode: str) -> [[]]:
+    def test(self, trials: int, mode: str, hash_table: ProbingHashTable) -> []:
         """Demonstrate linear and quadratic probing with random string insertions."""
         # print(f"\n{'=' * 40}")
         # print(f"  {mode.upper()} PROBING ({self._table_capacity})")
@@ -144,12 +139,12 @@ class TestHashTable:
 
         for _ in range(trials):
             value: str = self.random_string(5)
-            probes: list[int] = self._hash_table.insert(value)
+            probes: list[int] = hash_table.insert(value)
             status: str = "collision!" if len(probes) > 1 else "direct"
             # print(
             #     f"  insert({value}): hash={abs(hash(value)) % capacity:<3} probes={probes}  [{status}]"
             # )
-            load_factor = round(self._hash_table._size / self._hash_table._capacity, 2) # couldn't get the :.2f to work here
+            load_factor = round(hash_table._size / hash_table._capacity, 2) # couldn't get the :.2f to work here
             probe_lf_table.append([load_factor, len(probes)])
 
         # print(f"\n{self._hash_table.display()}")
@@ -162,35 +157,55 @@ class TestHashTable:
     def avg_by_lf(self, load_factor, results:[[]]) -> float:
         average: float = 0.0
         counter: int = 0
-        for i in range(1, len(results)):
-            if results[i][0] == load_factor:
-                average += results[i][1]
-                counter += 1
+        lf_index = 0
+        probe_index = 1
 
-        print(average/counter)
-        return average/counter
+        for i in range(1, len(results)): # for each trial
+            for j in range(0, len(results[i])): # for each rep
+                if results[i][j][lf_index] == load_factor:
+                    average += results[i][j][probe_index]
+                    counter += 1
+
+        return round(average/counter, 2)
 
 
 if __name__ == "__main__":
         
     capacity = 11
     modes: tuple[str, str] = ("linear", "quadratic")
-    trials = 10 # number of tests
+    trials = 200 # number of tests
     reps = 11 # number of strings generated per test
 
-    linear_results = [[]]
-    quadratic_results = [[]]
+    test_table = TestHashTable()
+    linear_results = []
+    quadratic_results = []
 
+    lfs_avgs = [[],[],[]]
+
+    print("*" * 80)
     for mode in modes:
-        print("*" * 80)
         for i in range(trials):
-            ht = TestHashTable(ProbingHashTable(capacity, mode))
-            results = ht.test(reps, mode)
-            ht.avg_by_lf(0.09, results)
+            ht = ProbingHashTable(capacity, mode)
+            results = test_table.test(reps, mode, ht)
             linear_results.append(results) if mode == modes[0] else quadratic_results.append(results)
 
-    print(f"LINEAR TEST RESULTS: \n\t{linear_results}")
-    print(f"QUADRATIC TEST RESULTS: \n\t{quadratic_results}")
+    for i in range(1, reps):
+        lfs_avgs[0].append(round(i/reps, 2))
+
+    # print("LINEAR TEST RESULTS:")
+    # for i in range(len(linear_results)):
+    #     print(f"\t{linear_results[i]}")
+    # print("QUADRATIC TEST RESULTS:")
+    #     print(f"\t{quadratic_results[i]}")
+
+    for i in range(len(lfs_avgs[0])):
+        lfs_avgs[1].append(test_table.avg_by_lf(lfs_avgs[0][i], linear_results))
+        lfs_avgs[2].append(test_table.avg_by_lf(lfs_avgs[0][i], quadratic_results))
+
+    print(lfs_avgs[0])
+    print(lfs_avgs[1])
+    print(lfs_avgs[2])
+
 
 
 
