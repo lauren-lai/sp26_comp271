@@ -141,7 +141,8 @@ class TestHashTable:
                 probes = hash_table.insert(value)
                 attempts += 1
             load_factor = round(hash_table._size / hash_table._capacity, 2)
-            probe_lf_table.append([load_factor, len(probes), attempts])
+            trial = [load_factor, len(probes), attempts]
+            probe_lf_table.append(trial)
         return probe_lf_table
 
     def avg_by_lf(self, load_factor, results:[]) -> float:
@@ -150,9 +151,10 @@ class TestHashTable:
         counter: int = 0
 
         for i in range(len(results)):
-            print(f"i is {i}")
-            print(results[i])
-               
+            for j in range(len(results[i])):
+                if results[i][j][0] == load_factor:
+                    average += results[i][j][1]
+                    counter += 1
         return round(average/counter, 2)
 
 
@@ -160,7 +162,7 @@ if __name__ == "__main__":
         
     capacity = 11
     modes: tuple[str, str] = ("linear", "quadratic")
-    trials = 5 # number of tests
+    trials = 250 # number of tests
     reps = 11 # number of strings generated per test
 
     test_table = TestHashTable()
@@ -173,26 +175,29 @@ if __name__ == "__main__":
         for i in range(trials):
             ht = ProbingHashTable(capacity, mode)
             results = test_table.test(reps, mode, ht)
-            linear_results.append([results]) if mode == modes[0] else quadratic_results.append([results])
+            linear_results.append(results) if mode == modes[0] else quadratic_results.append(results)
     
-    print("LINEAR RESULTS")
-    for i in range(len(linear_results)):
-        for j in range(len(linear_results[i])):
-            print(f"\t{linear_results[i][j]}")
-    print("QUADRATIC RESULTS")
-    for i in range(len(quadratic_results)):
-        for j in range(len(linear_results[i])):
-            print(f"\t{quadratic_results[i][j]}")
+    # print("LINEAR RESULTS")
+    # for i in range(len(linear_results)):
+    #     for j in range(len(linear_results[i])):
+    #         print(f"\t{linear_results[i][j]}")
+    # print("QUADRATIC RESULTS")
+    # for i in range(len(quadratic_results)):
+    #     for j in range(len(linear_results[i])):
+    #         print(f"\t{quadratic_results[i][j]}"
 
     for i in range(1, capacity + 1):
         avgs_by_lf.append([round(i/capacity, 2)])
     print(avgs_by_lf)
 
     for i in range(len(avgs_by_lf)):
-        print(i)
-        lin_avg = test_table.avg_by_lf(avgs_by_lf[i], linear_results)
-        print(lin_avg)
+        lin_avg = test_table.avg_by_lf(avgs_by_lf[i][0], linear_results)
+        quad_avg = test_table.avg_by_lf(avgs_by_lf[i][0], quadratic_results)
+        avgs_by_lf[i].append(lin_avg)
+        avgs_by_lf[i].append(quad_avg)
 
+    for i in range(len(avgs_by_lf)):
+        print(avgs_by_lf[i])
 
 
 
