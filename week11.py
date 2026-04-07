@@ -140,8 +140,8 @@ class TestHashTable:
         # print(f"  {mode.upper()} PROBING ({self._table_capacity})")
         # print(f"{'=' * 40}")
 
-        probe_lf_table = [[]]
-        
+        probe_lf_table = []
+
         for _ in range(trials):
             value: str = self.random_string(5)
             probes: list[int] = self._hash_table.insert(value)
@@ -150,7 +150,7 @@ class TestHashTable:
             #     f"  insert({value}): hash={abs(hash(value)) % capacity:<3} probes={probes}  [{status}]"
             # )
             load_factor = round(self._hash_table._size / self._hash_table._capacity, 2) # couldn't get the :.2f to work here
-            probe_lf_table.append([len(probes), load_factor])
+            probe_lf_table.append([load_factor, len(probes)])
 
         # print(f"\n{self._hash_table.display()}")
         # print(
@@ -158,6 +158,17 @@ class TestHashTable:
         # )
 
         return probe_lf_table
+
+    def avg_by_lf(self, load_factor, results:[[]]) -> float:
+        average: float = 0.0
+        counter: int = 0
+        for i in range(1, len(results)):
+            if results[i][0] == load_factor:
+                average += results[i][1]
+                counter += 1
+
+        print(average/counter)
+        return average/counter
 
 
 if __name__ == "__main__":
@@ -175,9 +186,11 @@ if __name__ == "__main__":
         for i in range(trials):
             ht = TestHashTable(ProbingHashTable(capacity, mode))
             results = ht.test(reps, mode)
+            ht.avg_by_lf(0.09, results)
             linear_results.append(results) if mode == modes[0] else quadratic_results.append(results)
 
     print(f"LINEAR TEST RESULTS: \n\t{linear_results}")
     print(f"QUADRATIC TEST RESULTS: \n\t{quadratic_results}")
 
-    
+
+
