@@ -62,6 +62,12 @@ class LinkedList:
         if value is not None:
             self.add(Node(value))
 
+    def remove(self, value:str) -> bool:
+        pass
+        
+    def remove_all(self, value:str) -> bool:
+        pass
+
 
 # -------------------------
 # Brutally naive testing
