@@ -63,7 +63,32 @@ class LinkedList:
             self.add(Node(value))
 
     def remove(self, value:str) -> bool:
-        pass
+        current = self._head
+        if current is None:
+            return False
+        # only head in list
+        if current.get_value() == value:
+            self._head = current.get_next()
+            current = None
+            return True
+
+        previous = None
+        found = False
+        while current.get_next() is not None and not found:
+            previous = current
+            current = current.get_next()
+            if current.get_value() == value:
+                previous.set_next(current.get_next())
+                found = True
+
+        if current.get_next() is None and current.get_value() == value:
+            current = None
+            found = True
+        
+        return found
+
+
+
         
     def remove_all(self, value:str) -> bool:
         pass
@@ -74,7 +99,15 @@ class LinkedList:
 # -------------------------
 if __name__ == "__main__":
     test = LinkedList()
-    test.add(Node(1))
-    test.add(Node(2))
+    for i in range(10):
+        test.add(Node(i))
     print(test)
 
+    test2 = LinkedList()
+    print(test2.remove(3))
+
+    print(test.remove(5))
+    print(test.remove(9))
+    print(test.remove(10))
+    print(test.remove(0))
+    print(test)
