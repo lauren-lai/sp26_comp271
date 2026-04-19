@@ -4,6 +4,7 @@ class WeirdoBST:
 
     def insert(self, value: str) -> None:
         """inserts a new value into the BST, assuming no duplicates"""
+        # print("-----------------------------")
         current = 0
         parent = 0
         found = False
@@ -11,23 +12,27 @@ class WeirdoBST:
         if len(self.__underlying) == 0:
             self.__underlying.append(value)
             found = True
-        if self.__underlying[0] == value:
+        elif self.__underlying[0] == value:
             found = True
 
         #tracking indexes because .left/.right isnt an option
         while self.__underlying[current] is not None and not found:
+            # print("in while loop")
             if self.__underlying[current] == value:
+                # print("in matching if")
                 found = True
             parent = current
             if value < self.__underlying[current]:
+                # print("in less than")
                 current = (current * 2) + 1
             else:
+                # print("in greater than")
                 current = (current * 2) + 2
-            
-            if current > len(self.__underlying):
+            # print(f"updated current is {current}")
+            if current >= len(self.__underlying):
                 for i in range(current):
                     self.__underlying.append(None)
-        print(current)
+
         if current != 0:
             if value < self.__underlying[parent]:
                 self.__underlying[parent*2 + 1] = value
@@ -45,6 +50,7 @@ class WeirdoBST:
                 current = self.__underlying[2*i + 1]
             else:
                 current = self.__underlying[2*i + 2]
+            i += 1
         return False
 
     def __len__(self) -> int:
@@ -55,7 +61,7 @@ class WeirdoBST:
                 n += 1
         return n
 
-    _HEADER_FORMAT = "this tree has {} elements:"
+    _HEADER_FORMAT = "this tree has {} elements!"
     def __str__(self) -> str:
         """returns a print-friendly string"""
         output = self._HEADER_FORMAT.format(self.__len__())
@@ -67,10 +73,18 @@ class WeirdoBST:
 if __name__ == "__main__":
     bst = WeirdoBST()
     print(bst.__str__())
-    bst.insert("A")
-    bst.insert("A")
-    bst.insert("B")
-    bst.insert("C")
-    bst.insert("D")
 
+    # bst.insert("A")
+    # bst.insert("B")
+    # bst.insert("C")
+    # bst.insert("D")
+
+    bst.insert("Z")
+    bst.insert("M")
+    bst.insert("F")
+
+    print(bst.__len__())
+    print(bst.search("Z")) # should print True
+    print(bst.search("O")) # should print False
+    
     print(bst.__str__())
