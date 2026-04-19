@@ -1,43 +1,43 @@
 class WeirdoBST:
     def __init__(self):
-        self.__underlying: list[str|None] = ["A"]
+        self.__underlying: list[str|None] = []
 
     def insert(self, value: str) -> None:
         """inserts a new value into the BST, assuming no duplicates"""
-
-        #need case for first element
-        if self.__underlying is None:
-            print("none2")
-        if self.__underlying[0] is None:
-            print("none")
-
-
         current = 0
         parent = 0
         found = False
+        # need case for first element
+        if len(self.__underlying) == 0:
+            self.__underlying.append(value)
+            found = True
+        if self.__underlying[0] == value:
+            found = True
 
-        #tracking index because lists dont have a node.left/.right option
+        #tracking indexes because .left/.right isnt an option
         while self.__underlying[current] is not None and not found:
             if self.__underlying[current] == value:
                 found = True
             parent = current
             if value < self.__underlying[current]:
-                current = current*2 + 1
+                current = (current * 2) + 1
             else:
-                current = current*2 + 2
-
-        if value < self.__underlying[parent]:
-            self.__underlying[parent*2 + 1] = value
-        else:
-            self.__underlying[parent*2 + 2] = value
+                current = (current * 2) + 2
             
-
+            if current > len(self.__underlying):
+                for i in range(current):
+                    self.__underlying.append(None)
+        print(current)
+        if current != 0:
+            if value < self.__underlying[parent]:
+                self.__underlying[parent*2 + 1] = value
+            else:
+                self.__underlying[parent*2 + 2] = value
 
     def search(self, value: str) -> bool:
         """returns whether the given string is present in the list"""
         i = 0
         current = self.__underlying[i]
-
         while current is not None:
             if current == value:
                 return True
@@ -60,14 +60,15 @@ class WeirdoBST:
         """returns a print-friendly string"""
         output = self._HEADER_FORMAT.format(self.__len__())
         for i in range(len(self.__underlying)):
-            output += f"\tat index {i}, the value is {self.__underlying[i]}"
+            output += f"\n\tat {i}, the value is {self.__underlying[i]}"
         return output
         
 
 if __name__ == "__main__":
     bst = WeirdoBST()
     print(bst.__str__())
-    # bst.insert("A")
+    bst.insert("A")
+    bst.insert("A")
     bst.insert("B")
     bst.insert("C")
     bst.insert("D")
